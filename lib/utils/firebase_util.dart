@@ -54,6 +54,14 @@ Future logInUser(BuildContext context, WidgetRef ref,
       return;
     }
 
+    if (userData[UserFields.assignedSection].toString().isEmpty) {
+      await FirebaseAuth.instance.signOut();
+      scaffoldMessenger.showSnackBar(const SnackBar(
+          content: Text('The admin has not yet assigned you to a section.')));
+      ref.read(loadingProvider.notifier).toggleLoading(false);
+      return;
+    }
+
     //  reset the password in firebase in case client reset it using an email link.
     if (userData[UserFields.password] != passwordController.text) {
       await FirebaseFirestore.instance
@@ -110,7 +118,7 @@ Future registerNewUser(BuildContext context, WidgetRef ref,
     }
     if (ref.read(verificationImageProvider).verificationImage == null) {
       scaffoldMessenger.showSnackBar(const SnackBar(
-          content: Text('Please upload an image of your faculty ID.')));
+          content: Text('Please upload an image of your student ID.')));
       return;
     }
     //  Create user with Firebase Auth
@@ -152,7 +160,7 @@ Future registerNewUser(BuildContext context, WidgetRef ref,
     await FirebaseAuth.instance.signOut();
     ref.read(loadingProvider).toggleLoading(false);
     ref.read(verificationImageProvider).resetVerificationImage();
-    navigator.pushNamed(NavigatorRoutes.login);
+    navigator.pushReplacementNamed(NavigatorRoutes.login);
   } catch (error) {
     scaffoldMessenger.showSnackBar(
         SnackBar(content: Text('Error registering new user: $error')));
