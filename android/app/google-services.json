@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "364233515842",
+    "project_id": "comprehenzone",
+    "storage_bucket": "comprehenzone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364233515842:android:59d7719408ba9c515bdedb",
+        "android_client_info": {
+          "package_name": "com.example.comprehenzone_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARj0Xepgd98o_W5XDqxvj_9OMcAH654Ak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
