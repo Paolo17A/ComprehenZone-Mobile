@@ -3,12 +3,16 @@
 //==============================================================================
 // ignore_for_file: unnecessary_cast
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:comprehenzone_mobile/providers/profile_image_url_provider.dart';
 import 'package:comprehenzone_mobile/utils/navigator_util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../providers/loading_provider.dart';
 import '../providers/user_type_provider.dart';
@@ -71,6 +75,9 @@ Future logInUser(BuildContext context, WidgetRef ref,
     }
     ref.read(userTypeProvider).setUserType(userData[UserFields.userType]);
     ref.read(loadingProvider.notifier).toggleLoading(false);
+    emailController.clear();
+    passwordController.clear();
+
     navigator.pushNamed(NavigatorRoutes.home);
   } catch (error) {
     scaffoldMessenger
@@ -318,4 +325,182 @@ Future<List<DocumentSnapshot>> getAvailableTeacherDocs() async {
       .where(UserFields.isVerified, isEqualTo: true)
       .get();
   return teachers.docs.map((student) => student as DocumentSnapshot).toList();
+}
+
+Future uploadProfilePicture(BuildContext context, WidgetRef ref) async {
+  try {
+    ImagePicker imagePicker = ImagePicker();
+    final selectedXFile =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+    if (selectedXFile == null) {
+      return;
+    }
+    //  Upload proof of employment to Firebase Storage
+    final storageRef = FirebaseStorage.instance
+        .ref()
+        .child(StorageFields.profilePics)
+        .child('${FirebaseAuth.instance.currentUser!.uid}.png');
+    final uploadTask = storageRef.putFile(File(selectedXFile.path));
+    final taskSnapshot = await uploadTask;
+    final String downloadURL = await taskSnapshot.ref.getDownloadURL();
+    await FirebaseFirestore.instance
+        .collection(Collections.users)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({UserFields.profileImageURL: downloadURL});
+    ref.read(profileImageURLProvider).setImageURL(downloadURL);
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Successfully uploaded new profile picture.')));
+  } catch (error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error uploading new profile picture: $error')));
+    ref.read(loadingProvider).toggleLoading(false);
+  }
+}
+
+Future removeProfilePicture(BuildContext context, WidgetRef ref) async {
+  try {
+    //  Remove profile pic from cloud storage
+    ref.read(loadingProvider).toggleLoading(true);
+    await FirebaseStorage.instance
+        .ref()
+        .child(StorageFields.profilePics)
+        .child('${FirebaseAuth.instance.currentUser!.uid}.png')
+        .delete();
+
+    //Set profileImageURL paramter to ''
+    await FirebaseFirestore.instance
+        .collection(Collections.users)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({UserFields.profileImageURL: ''});
+    ref.read(profileImageURLProvider).setImageURL('');
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Successfully removed profile picture.')));
+  } catch (error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error uploading new profile picture: $error')));
+    ref.read(loadingProvider).toggleLoading(false);
+  }
+}
+
+Future updateProfile(BuildContext context, WidgetRef ref,
+    {required TextEditingController firstNameController,
+    required TextEditingController lastNameController}) async {
+  if (firstNameController.text.isEmpty || lastNameController.text.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill up all given fields.')));
+    return;
+  }
+  try {
+    ref.read(loadingProvider).toggleLoading(true);
+    FirebaseFirestore.instance
+        .collection(Collections.users)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      UserFields.firstName: firstNameController.text.trim(),
+      UserFields.lastName: lastNameController.text.trim(),
+    });
+    ref.read(loadingProvider).toggleLoading(false);
+    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacementNamed(NavigatorRoutes.profile);
+  } catch (error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating profile: ${error.toString()}')));
+    ref.read(loadingProvider).toggleLoading(false);
+  }
+}
+
+//==============================================================================
+//SECTIONS======================================================================
+//==============================================================================
+Future<DocumentSnapshot> getThisSectionDoc(String sectionID) async {
+  return await FirebaseFirestore.instance
+      .collection(Collections.sections)
+      .doc(sectionID)
+      .get();
+}
+
+//==============================================================================
+//MODULES-======================================================================
+//==============================================================================
+Future<DocumentSnapshot> getThisModuleDoc(String moduleID) async {
+  return await FirebaseFirestore.instance
+      .collection(Collections.modules)
+      .doc(moduleID)
+      .get();
+}
+
+Future<List<DocumentSnapshot>> getAllAssignedQuarterModuleDocs(
+    String teacherID, int quarter) async {
+  final modules = await FirebaseFirestore.instance
+      .collection(Collections.modules)
+      .where(ModuleFields.teacherID, isEqualTo: teacherID)
+      .where(ModuleFields.quarter, isEqualTo: quarter)
+      .get();
+  return modules.docs.map((e) => e as DocumentSnapshot).toList();
+}
+
+//==============================================================================
+//QUIZZES=======================================================================
+//==============================================================================
+Future<DocumentSnapshot> getThisQuizDoc(String quizID) async {
+  return await FirebaseFirestore.instance
+      .collection(Collections.quizzes)
+      .doc(quizID)
+      .get();
+}
+
+Future<List<DocumentSnapshot>> getAllAssignedQuizDocs(String teacherID) async {
+  final modules = await FirebaseFirestore.instance
+      .collection(Collections.quizzes)
+      .where(QuizFields.teacherID, isEqualTo: teacherID)
+      .get();
+  return modules.docs.map((e) => e as DocumentSnapshot).toList();
+}
+
+Future<DocumentSnapshot?> getQuizResult(String quizID) async {
+  final QuerySnapshot result = await FirebaseFirestore.instance
+      .collection(Collections.quizResults)
+      .where('quizID', isEqualTo: quizID)
+      .where('studentID', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      .limit(1)
+      .get();
+
+  if (result.docs.isNotEmpty) {
+    return result.docs.first;
+  } else {
+    return null;
+  }
+}
+
+void submitQuizAnswers(BuildContext context, WidgetRef ref,
+    {required String quizID,
+    required List<dynamic> selectedAnswers,
+    required int correctAnswers}) async {
+  final scaffoldMessenger = ScaffoldMessenger.of(context);
+  //final navigator = Navigator.of(context);
+  try {
+    ref.read(loadingProvider).toggleLoading(true);
+
+    final quizResultReference = await FirebaseFirestore.instance
+        .collection(Collections.quizResults)
+        .add({
+      QuizResultFields.studentID: FirebaseAuth.instance.currentUser!.uid,
+      QuizResultFields.quizID: quizID,
+      QuizResultFields.answers: selectedAnswers,
+      QuizResultFields.grade: correctAnswers,
+    });
+
+    scaffoldMessenger.showSnackBar(
+        SnackBar(content: Text('Successfully submitted this quiz.')));
+    ref.read(loadingProvider).toggleLoading(false);
+
+    NavigatorRoutes.selectedQuizResult(context,
+        quizResultID: quizResultReference.id, isReplacing: true);
+    // navigator.pop();
+    // navigator.pushReplacementNamed(NavigatorRoutes.studentSubmittables);
+  } catch (error) {
+    scaffoldMessenger.showSnackBar(
+        SnackBar(content: Text('Error submitting quiz answers: $error')));
+    ref.read(loadingProvider).toggleLoading(false);
+  }
 }

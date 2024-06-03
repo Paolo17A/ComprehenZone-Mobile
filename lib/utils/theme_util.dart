@@ -4,10 +4,11 @@ import 'color_util.dart';
 
 ThemeData themeData = ThemeData(
   colorSchemeSeed: CustomColors.midnightBlue,
-  scaffoldBackgroundColor: CustomColors.pearlWhite,
+  scaffoldBackgroundColor: Colors.transparent,
   appBarTheme: const AppBarTheme(
       actionsIconTheme: IconThemeData(color: CustomColors.midnightBlue),
-      backgroundColor: CustomColors.grass,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
       toolbarHeight: 40),
   snackBarTheme:
       const SnackBarThemeData(backgroundColor: CustomColors.midnightBlue),

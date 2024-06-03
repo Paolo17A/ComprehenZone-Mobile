@@ -1,7 +1,7 @@
 import 'package:comprehenzone_mobile/providers/loading_provider.dart';
 import 'package:comprehenzone_mobile/providers/verification_image_provider.dart';
-import 'package:comprehenzone_mobile/utils/custom_miscellaneous_widgets.dart';
-import 'package:comprehenzone_mobile/utils/custom_padding_widgets.dart';
+import 'package:comprehenzone_mobile/widgets/custom_miscellaneous_widgets.dart';
+import 'package:comprehenzone_mobile/widgets/custom_padding_widgets.dart';
 import 'package:comprehenzone_mobile/utils/string_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

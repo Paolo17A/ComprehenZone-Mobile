@@ -21,6 +21,7 @@ class ComprehenZone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'ComprehenZone',
         theme: themeData,
         routes: routes,

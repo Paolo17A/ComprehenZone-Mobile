@@ -1,9 +1,10 @@
 import 'package:comprehenzone_mobile/providers/loading_provider.dart';
-import 'package:comprehenzone_mobile/utils/custom_miscellaneous_widgets.dart';
-import 'package:comprehenzone_mobile/utils/custom_padding_widgets.dart';
+import 'package:comprehenzone_mobile/widgets/custom_miscellaneous_widgets.dart';
+import 'package:comprehenzone_mobile/widgets/custom_padding_widgets.dart';
 import 'package:comprehenzone_mobile/utils/string_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -42,10 +43,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             image: AssetImage(ImagePaths.loginBG),
                             fit: BoxFit.fill))),
                 SingleChildScrollView(
-                    child: all20Pix(
+                    child: Column(
+                  children: [
+                    Gap(40),
+                    all20Pix(
                         child: loginFieldsContainer(context, ref,
                             emailController: emailController,
-                            passwordController: passwordController)))
+                            passwordController: passwordController)),
+                  ],
+                ))
               ],
             )),
       ),

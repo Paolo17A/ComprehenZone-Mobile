@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/color_util.dart';
@@ -25,6 +26,18 @@ Widget registerButton({required Function onPress}) {
     child: TextButton(
         onPressed: () => onPress(),
         child: blackInterBold('REGISTER', fontSize: 20)),
+  ));
+}
+
+Widget saveChangesButton({required Function onPress}) {
+  return all10Pix(
+      child: Container(
+    width: double.infinity,
+    decoration: BoxDecoration(
+        border: Border.all(width: 3), borderRadius: BorderRadius.circular(10)),
+    child: TextButton(
+        onPressed: () => onPress(),
+        child: blackInterBold('SAVE CHANGES', fontSize: 20)),
   ));
 }
 
@@ -134,6 +147,91 @@ Widget pageButton(BuildContext context,
           style: TextButton.styleFrom(
               foregroundColor: fontColor, disabledForegroundColor: Colors.grey),
           child: Text(label)),
+    ),
+  );
+}
+
+Widget homeButton(BuildContext context,
+    {required Color color,
+    required String label,
+    required String imagePath,
+    required Function onPress,
+    double? left,
+    double? right,
+    double? top,
+    double? bottom}) {
+  return vertical20Pix(
+    child: Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+            width: MediaQuery.of(context).size.width * 0.7,
+            height: 100,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.white, width: 5),
+                color: color),
+            child: TextButton(
+                onPressed: () => onPress(),
+                child: whiteInterBold(label, fontSize: 28))),
+        Positioned(
+            left: left,
+            top: top,
+            right: right,
+            bottom: bottom,
+            child: Image.asset(imagePath, scale: 6))
+      ],
+    ),
+  );
+}
+
+Widget quarterButton(BuildContext context,
+    {required Color color,
+    required String label,
+    required String imagePath,
+    required Function onPress,
+    double? left,
+    double? right,
+    double? top,
+    double? bottom}) {
+  return vertical20Pix(
+    child: Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+            width: MediaQuery.of(context).size.width * 0.7,
+            height: 100,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.white, width: 5),
+                color: color),
+            child: TextButton(
+                onPressed: () => onPress(),
+                child: blackImpactBold(label, fontSize: 30))),
+        Positioned(
+            left: left,
+            top: top,
+            right: right,
+            bottom: bottom,
+            child: Image.asset(imagePath, scale: 7))
+      ],
+    ),
+  );
+}
+
+Widget logOutButton(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.all(20),
+    child: Container(
+      decoration: BoxDecoration(
+          border: Border.all(), borderRadius: BorderRadius.circular(20)),
+      child: ListTile(
+        leading: const Icon(Icons.logout, color: Colors.black),
+        title: blackInterBold('LOG-OUT'),
+        onTap: () {
+          FirebaseAuth.instance.signOut().then((value) {
+            Navigator.popUntil(context, (route) => route.isFirst);
+          });
+        },
+      ),
     ),
   );
 }

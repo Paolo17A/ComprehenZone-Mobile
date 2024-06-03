@@ -44,6 +44,8 @@ dependencies:
   google_fonts: 6.1.0
   gap: ^3.0.1
   flutter_launcher_icons: ^0.13.1
+  easy_pdf_viewer: ^1.0.8
+  url_launcher: ^6.2.6
 
 dev_dependencies:
   flutter_test:

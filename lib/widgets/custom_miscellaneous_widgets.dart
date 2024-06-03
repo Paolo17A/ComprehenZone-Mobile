@@ -383,3 +383,15 @@ Widget snapshotHandler(AsyncSnapshot snapshot) {
   }
   return Container();
 }
+
+Widget buildProfileImageWidget(
+    {required String profileImageURL, double radius = 40}) {
+  return Column(children: [
+    profileImageURL.isNotEmpty
+        ? CircleAvatar(
+            radius: radius, backgroundImage: NetworkImage(profileImageURL))
+        : CircleAvatar(
+            radius: radius,
+            backgroundImage: AssetImage(ImagePaths.defaultProfilePic)),
+  ]);
+}
