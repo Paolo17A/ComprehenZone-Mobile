@@ -56,6 +56,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        appBar: AppBar(),
         extendBodyBehindAppBar: true,
         body: Container(
           width: MediaQuery.of(context).size.width,

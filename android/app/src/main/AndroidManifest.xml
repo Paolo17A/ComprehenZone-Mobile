@@ -19,7 +19,7 @@
     </intent>
     </queries>
     <application
-        android:label="comprehenzone_mobile"
+        android:label="ComprehenZone"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
