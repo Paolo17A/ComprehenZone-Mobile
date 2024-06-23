@@ -1,10 +1,10 @@
 import 'package:comprehenzone_mobile/screens/answer_quiz_screen.dart';
 import 'package:comprehenzone_mobile/screens/edit_profile_screen.dart';
+import 'package:comprehenzone_mobile/screens/grades_screen.dart';
 import 'package:comprehenzone_mobile/screens/home_screen.dart';
 import 'package:comprehenzone_mobile/screens/login_screen.dart';
 import 'package:comprehenzone_mobile/screens/quarter_select_screen.dart';
 import 'package:comprehenzone_mobile/screens/quiz_select_screen.dart';
-import 'package:comprehenzone_mobile/screens/register_screen.dart';
 import 'package:comprehenzone_mobile/screens/profile_screen.dart';
 import 'package:comprehenzone_mobile/screens/selected_module_screen.dart';
 import 'package:comprehenzone_mobile/screens/selected_quarter_modules_screen.dart';
@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 
 class NavigatorRoutes {
   static const login = 'login';
-  static const register = 'register';
   static const home = 'home';
   static const profile = 'profile';
   static const editProfile = 'editProfile';
@@ -37,25 +36,29 @@ class NavigatorRoutes {
   }
 
   static void selectedQuizResult(BuildContext context,
-      {required String quizResultID, bool isReplacing = false}) {
+      {required String quizResultID,
+      bool isReplacing = false,
+      bool viewingGrades = false}) {
     if (isReplacing) {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (_) =>
-              SelectedQuizResultScreen(quizResultID: quizResultID)));
+          builder: (_) => SelectedQuizResultScreen(
+              quizResultID: quizResultID, viewingGrades: viewingGrades)));
     } else {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) =>
-              SelectedQuizResultScreen(quizResultID: quizResultID)));
+          builder: (_) => SelectedQuizResultScreen(
+              quizResultID: quizResultID, viewingGrades: viewingGrades)));
     }
   }
+
+  static const grades = 'grades';
 }
 
 final Map<String, WidgetBuilder> routes = {
   NavigatorRoutes.login: (context) => const LoginScreen(),
-  NavigatorRoutes.register: (context) => const RegisterScreen(),
   NavigatorRoutes.home: (context) => const HomeScreen(),
   NavigatorRoutes.profile: (context) => const ProfileScreen(),
   NavigatorRoutes.editProfile: (context) => const EditProfileScreen(),
   NavigatorRoutes.quarterSelect: (context) => const QuarterSelectScreen(),
-  NavigatorRoutes.quizSelect: (context) => const QuizSelectScreen()
+  NavigatorRoutes.quizSelect: (context) => const QuizSelectScreen(),
+  NavigatorRoutes.grades: (context) => const GradesScreen()
 };

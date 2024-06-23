@@ -15,7 +15,9 @@ import '../widgets/custom_padding_widgets.dart';
 
 class SelectedQuizResultScreen extends ConsumerStatefulWidget {
   final String quizResultID;
-  const SelectedQuizResultScreen({super.key, required this.quizResultID});
+  final bool viewingGrades;
+  const SelectedQuizResultScreen(
+      {super.key, required this.quizResultID, required this.viewingGrades});
 
   @override
   ConsumerState<SelectedQuizResultScreen> createState() =>
@@ -73,6 +75,9 @@ class _SelectedQuizResultScreenState
     return PopScope(
       onPopInvoked: (didPop) =>
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        if (widget.viewingGrades) {
+          return;
+        }
         Navigator.of(context).pushReplacementNamed(NavigatorRoutes.quizSelect);
       }),
       child: Scaffold(

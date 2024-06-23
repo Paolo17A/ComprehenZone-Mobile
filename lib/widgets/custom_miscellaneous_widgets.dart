@@ -67,7 +67,7 @@ Widget loginFieldsContainer(BuildContext context, WidgetRef ref,
           onPress: () => logInUser(context, ref,
               emailController: emailController,
               passwordController: passwordController)),
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      /*Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         blackInterBold('Don\'t have an account?', fontSize: 12),
         TextButton(
             onPressed: () {
@@ -77,7 +77,7 @@ Widget loginFieldsContainer(BuildContext context, WidgetRef ref,
             },
             child: blackInterBold('REGISTER',
                 fontSize: 12, textDecoration: TextDecoration.underline))
-      ])
+      ])*/
     ],
   );
 }

@@ -78,7 +78,8 @@ class HomeScreen extends StatelessWidget {
                         color: CustomColors.limeGreen,
                         label: 'GRADES AND FEEDBACK',
                         imagePath: ImagePaths.homeFeedback,
-                        onPress: () {},
+                        onPress: () => Navigator.of(context)
+                            .pushNamed(NavigatorRoutes.grades),
                         left: -40,
                         bottom: -10)
                   ]),

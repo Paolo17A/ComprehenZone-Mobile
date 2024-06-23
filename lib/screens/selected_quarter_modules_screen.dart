@@ -34,9 +34,9 @@ class _SelectedQuarterModulesScreenState
         ref.read(loadingProvider).toggleLoading(true);
         final user = await getCurrentUserDoc();
         final userData = user.data() as Map<dynamic, dynamic>;
-        String assignedSection = userData[UserFields.assignedSection];
+        List<dynamic> assignedSections = userData[UserFields.assignedSections];
         List<DocumentSnapshot> teacherDocs =
-            await getSectionTeacherDoc(assignedSection);
+            await getSectionTeacherDoc(assignedSections.first);
         String teacherID = teacherDocs.first.id;
         moduleDocs =
             await getAllAssignedQuarterModuleDocs(teacherID, widget.quarter);

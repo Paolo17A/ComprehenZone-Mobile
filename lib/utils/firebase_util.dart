@@ -16,7 +16,6 @@ import 'package:image_picker/image_picker.dart';
 
 import '../providers/loading_provider.dart';
 import '../providers/user_type_provider.dart';
-import '../providers/users_provider.dart';
 import '../providers/verification_image_provider.dart';
 import 'string_util.dart';
 
@@ -45,23 +44,6 @@ Future logInUser(BuildContext context, WidgetRef ref,
       await FirebaseAuth.instance.signOut();
       scaffoldMessenger.showSnackBar(const SnackBar(
           content: Text('This mobile app is for students only.')));
-      ref.read(loadingProvider.notifier).toggleLoading(false);
-      return;
-    }
-
-    if (!userData[UserFields.isVerified]) {
-      await FirebaseAuth.instance.signOut();
-      scaffoldMessenger.showSnackBar(const SnackBar(
-          content:
-              Text('Your account has not yet been verified by the admin')));
-      ref.read(loadingProvider.notifier).toggleLoading(false);
-      return;
-    }
-
-    if (userData[UserFields.assignedSection].toString().isEmpty) {
-      await FirebaseAuth.instance.signOut();
-      scaffoldMessenger.showSnackBar(const SnackBar(
-          content: Text('The admin has not yet assigned you to a section.')));
       ref.read(loadingProvider.notifier).toggleLoading(false);
       return;
     }
@@ -146,7 +128,7 @@ Future registerNewUser(BuildContext context, WidgetRef ref,
       UserFields.profileImageURL: '',
       UserFields.idNumber: idNumberController.text.trim(),
       UserFields.isVerified: false,
-      UserFields.assignedSection: ''
+      UserFields.assignedSections: []
     });
 
     final storageRef = FirebaseStorage.instance
@@ -208,92 +190,11 @@ Future<List<DocumentSnapshot>> getAllStudentDocs() async {
   return users.docs.map((user) => user as DocumentSnapshot).toList();
 }
 
-Future approveThisUserRegistration(BuildContext context, WidgetRef ref,
-    {required String userID, required String userType}) async {
-  final scaffoldMessenger = ScaffoldMessenger.of(context);
-  try {
-    ref.read(loadingProvider).toggleLoading(true);
-    await FirebaseFirestore.instance
-        .collection(Collections.users)
-        .doc(userID)
-        .update({UserFields.isVerified: true});
-    scaffoldMessenger.showSnackBar(const SnackBar(
-        content: Text('Successfully approved this user\'s registration.')));
-    ref.read(usersProvider).setUserDocs(userType == UserTypes.teacher
-        ? await getAllTeacherDocs()
-        : await getAllStudentDocs());
-    ref.read(loadingProvider.notifier).toggleLoading(false);
-  } catch (error) {
-    scaffoldMessenger.showSnackBar(SnackBar(
-        content: Text('Error approving this user\'s registration.: $error')));
-    ref.read(loadingProvider).toggleLoading(false);
-  }
-}
-
-Future denyThisUserRegistration(BuildContext context, WidgetRef ref,
-    {required String userID, required String userType}) async {
-  final scaffoldMessenger = ScaffoldMessenger.of(context);
-  try {
-    ref.read(loadingProvider).toggleLoading(true);
-
-    //  Store admin's current data locally then sign out
-    final currentUser = await FirebaseFirestore.instance
-        .collection(Collections.users)
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-    final currentUserData = currentUser.data() as Map<dynamic, dynamic>;
-    String userEmail = currentUserData[UserFields.email];
-    String userPassword = currentUserData[UserFields.password];
-    await FirebaseAuth.instance.signOut();
-
-    //  Log-in to the collector account to be deleted
-    final collector = await FirebaseFirestore.instance
-        .collection(Collections.users)
-        .doc(userID)
-        .get();
-    final collectorData = collector.data() as Map<dynamic, dynamic>;
-    String collectorEmail = collectorData[UserFields.email];
-    String collectorPassword = collectorData[UserFields.password];
-    final collectorToDelete = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: collectorEmail, password: collectorPassword);
-    await collectorToDelete.user!.delete();
-
-    //  Log-back in to admin account
-    await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: userEmail, password: userPassword);
-
-    //  Delete valid IDs from Firebase Storage
-    await FirebaseStorage.instance
-        .ref()
-        .child(StorageFields.verificationImages)
-        .child(FirebaseAuth.instance.currentUser!.uid)
-        .child('${FirebaseAuth.instance.currentUser!.uid}.png')
-        .delete();
-
-    //  Delete collector document from users Firestore collection
-    await FirebaseFirestore.instance
-        .collection(Collections.users)
-        .doc(userID)
-        .delete();
-    scaffoldMessenger.showSnackBar(const SnackBar(
-        content: Text('Successfully denied this user\'s registration.')));
-    ref.read(usersProvider).setUserDocs(userType == UserTypes.teacher
-        ? await getAllTeacherDocs()
-        : await getAllStudentDocs());
-    ref.read(loadingProvider.notifier).toggleLoading(false);
-  } catch (error) {
-    scaffoldMessenger.showSnackBar(SnackBar(
-        content: Text('Error denying this user\'s registration: $error')));
-    ref.read(loadingProvider).toggleLoading(false);
-  }
-}
-
 Future<List<DocumentSnapshot>> getSectionStudentDocs(String sectionID) async {
   final students = await FirebaseFirestore.instance
       .collection(Collections.users)
       .where(UserFields.userType, isEqualTo: UserTypes.student)
-      .where(UserFields.assignedSection, isEqualTo: sectionID)
+      .where(UserFields.assignedSections, arrayContains: sectionID)
       .get();
   return students.docs.map((student) => student as DocumentSnapshot).toList();
 }
@@ -302,7 +203,7 @@ Future<List<DocumentSnapshot>> getSectionTeacherDoc(String sectionID) async {
   final teachers = await FirebaseFirestore.instance
       .collection(Collections.users)
       .where(UserFields.userType, isEqualTo: UserTypes.teacher)
-      .where(UserFields.assignedSection, isEqualTo: sectionID)
+      .where(UserFields.assignedSections, arrayContains: sectionID)
       .get();
   return teachers.docs.map((teacher) => teacher as DocumentSnapshot).toList();
 }
@@ -311,20 +212,24 @@ Future<List<DocumentSnapshot>> getStudentsWithNoSectionDocs() async {
   final students = await FirebaseFirestore.instance
       .collection(Collections.users)
       .where(UserFields.userType, isEqualTo: UserTypes.student)
-      .where(UserFields.assignedSection, isEqualTo: '')
+      .where(UserFields.assignedSections, isEqualTo: [])
       .where(UserFields.isVerified, isEqualTo: true)
       .get();
   return students.docs.map((student) => student as DocumentSnapshot).toList();
 }
 
-Future<List<DocumentSnapshot>> getAvailableTeacherDocs() async {
+Future<List<DocumentSnapshot>> getAvailableTeacherDocs(String sectionID) async {
   final teachers = await FirebaseFirestore.instance
       .collection(Collections.users)
       .where(UserFields.userType, isEqualTo: UserTypes.teacher)
-      .where(UserFields.assignedSection, isEqualTo: '')
-      .where(UserFields.isVerified, isEqualTo: true)
       .get();
-  return teachers.docs.map((student) => student as DocumentSnapshot).toList();
+
+  final availableTeachers = teachers.docs.where((doc) {
+    List assignedSections = doc[UserFields.assignedSections];
+    return !assignedSections.contains(sectionID);
+  }).toList();
+
+  return availableTeachers;
 }
 
 Future uploadProfilePicture(BuildContext context, WidgetRef ref) async {
@@ -450,18 +355,25 @@ Future<DocumentSnapshot> getThisQuizDoc(String quizID) async {
 }
 
 Future<List<DocumentSnapshot>> getAllAssignedQuizDocs(String teacherID) async {
-  final modules = await FirebaseFirestore.instance
+  final sectionQuizzes = await FirebaseFirestore.instance
       .collection(Collections.quizzes)
       .where(QuizFields.teacherID, isEqualTo: teacherID)
       .get();
-  return modules.docs.map((e) => e as DocumentSnapshot).toList();
+  final globalQuizzes = await FirebaseFirestore.instance
+      .collection(Collections.quizzes)
+      .where(QuizFields.isGlobal, isEqualTo: true)
+      .get();
+  return [...sectionQuizzes.docs, ...globalQuizzes.docs]
+      .map((e) => e as DocumentSnapshot)
+      .toList();
 }
 
 Future<DocumentSnapshot?> getQuizResult(String quizID) async {
   final QuerySnapshot result = await FirebaseFirestore.instance
       .collection(Collections.quizResults)
-      .where('quizID', isEqualTo: quizID)
-      .where('studentID', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      .where(QuizResultFields.quizID, isEqualTo: quizID)
+      .where(QuizResultFields.studentID,
+          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
       .limit(1)
       .get();
 
@@ -503,4 +415,17 @@ void submitQuizAnswers(BuildContext context, WidgetRef ref,
         SnackBar(content: Text('Error submitting quiz answers: $error')));
     ref.read(loadingProvider).toggleLoading(false);
   }
+}
+
+//==============================================================================
+//QUIZ RESULTS==================================================================
+//==============================================================================
+
+Future<List<DocumentSnapshot>> getUserQuizResults() async {
+  final quizResults = await FirebaseFirestore.instance
+      .collection(Collections.quizResults)
+      .where(QuizResultFields.studentID,
+          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      .get();
+  return quizResults.docs.map((e) => e as DocumentSnapshot).toList();
 }

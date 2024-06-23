@@ -38,8 +38,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ref
             .read(profileImageURLProvider)
             .setImageURL(userData[UserFields.profileImageURL]);
-        final section =
-            await getThisSectionDoc(userData[UserFields.assignedSection]);
+        final section = await getThisSectionDoc(
+            (userData[UserFields.assignedSections] as List<dynamic>).first);
         final sectionData = section.data() as Map<dynamic, dynamic>;
         sectionName = sectionData[SectionFields.name];
         ref.read(loadingProvider.notifier).toggleLoading(false);

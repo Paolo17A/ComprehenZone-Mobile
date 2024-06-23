@@ -99,6 +99,19 @@ Text lightGreenImpactBold(String label,
       overflow: overflow);
 }
 
+Text limeGreenImpactBold(String label,
+    {double? fontSize,
+    TextAlign textAlign = TextAlign.center,
+    TextOverflow? overflow,
+    TextDecoration? textDecoration}) {
+  return impactText(label,
+      color: CustomColors.limeGreen,
+      fontWeight: FontWeight.bold,
+      fontSize: fontSize,
+      textAlign: textAlign,
+      overflow: overflow);
+}
+
 Text cyanHelveticaBold(String label,
     {double? fontSize,
     TextAlign textAlign = TextAlign.center,

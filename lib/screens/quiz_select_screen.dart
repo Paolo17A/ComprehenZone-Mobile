@@ -29,9 +29,9 @@ class _QuizSelectScreenState extends ConsumerState<QuizSelectScreen> {
         ref.read(loadingProvider).toggleLoading(true);
         final user = await getCurrentUserDoc();
         final userData = user.data() as Map<dynamic, dynamic>;
-        String assignedSection = userData[UserFields.assignedSection];
+        List<dynamic> assignedSections = userData[UserFields.assignedSections];
         List<DocumentSnapshot> teacherDocs =
-            await getSectionTeacherDoc(assignedSection);
+            await getSectionTeacherDoc(assignedSections.first);
         String teacherID = teacherDocs.first.id;
         print(teacherID);
         quizDocs = await getAllAssignedQuizDocs(teacherID);
@@ -119,9 +119,9 @@ class _QuizSelectScreenState extends ConsumerState<QuizSelectScreen> {
         },
         child: Container(
             width: MediaQuery.of(context).size.width * 0.9,
-            height: 70,
+            //height: 70,
             decoration: BoxDecoration(color: Colors.white),
-            child: Center(child: lightGreenImpactBold(title, fontSize: 28))),
+            child: Center(child: limeGreenImpactBold(title, fontSize: 28))),
       ),
     );
   }

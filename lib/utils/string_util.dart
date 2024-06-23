@@ -21,6 +21,7 @@ class ImagePaths {
   static const quarterIdea = 'assets/images/idea.png';
   static const quarterReading = 'assets/images/reading-book 1.png';
   static const quizGB = 'assets/images/QUIZZES AND EXAM BG.jpg';
+  static const gradesBG = 'assets/images/GRADE AND FEEDBACK BG.jpg';
 }
 
 class StorageFields {
@@ -53,7 +54,7 @@ class UserFields {
   static const String isVerified = 'isVerified';
   static const String birthDate = 'birthDate';
   static const String contactNumber = 'contactNumber';
-  static const String assignedSection = 'assignedSection';
+  static const String assignedSections = 'assignedSections';
   static const String idNumber = 'idNumber';
   static const String verificationImage = 'verificationImage';
 }
@@ -82,8 +83,9 @@ class AdditionalResourcesFields {
 }
 
 class QuizFields {
+  static const String isGlobal = 'isGlobal';
+  static const String isActive = 'isActive';
   static const String teacherID = 'teacherID';
-  static const String sectionID = 'sectionID';
   static const String quizType = 'quizType';
   static const String title = 'title';
   static const String questions = 'questions';
