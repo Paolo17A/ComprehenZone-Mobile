@@ -24,6 +24,13 @@ class ImagePaths {
   static const gradesBG = 'assets/images/GRADE AND FEEDBACK BG.jpg';
 }
 
+class DocumentPaths {
+  static const quarter1Lesson1 = 'assets/documents/Quarter1Lesson1.pdf';
+  static const quarter1Lesson2 = 'assets/documents/Quarter1Lesson2.pdf';
+  static const quarter1Lesson3 = 'assets/documents/Quarter1Lesson3.pdf';
+  static const quarter1Lesson4 = 'assets/documents/Quarter1Lesson4.pdf';
+}
+
 class StorageFields {
   static const verificationImages = 'verificationImages';
   static const profilePics = 'profilePics';
@@ -57,6 +64,7 @@ class UserFields {
   static const String assignedSections = 'assignedSections';
   static const String idNumber = 'idNumber';
   static const String verificationImage = 'verificationImage';
+  static const String moduleProgresses = 'moduleProgresses';
 }
 
 class SectionFields {
@@ -75,6 +83,12 @@ class ModuleFields {
   static const String additionalDocuments = 'additionalDocuments';
   static const String additionalResources = 'additionalResources';
   static const String quarter = 'quarter';
+}
+
+class ModuleProgressFields {
+  static const String quarter = 'quarter';
+  static const String title = 'title';
+  static const String progress = 'progress';
 }
 
 class AdditionalResourcesFields {
