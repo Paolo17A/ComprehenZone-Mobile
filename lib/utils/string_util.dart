@@ -25,10 +25,14 @@ class ImagePaths {
 }
 
 class DocumentPaths {
-  static const quarter1Lesson1 = 'assets/documents/Quarter1Lesson1.pdf';
-  static const quarter1Lesson2 = 'assets/documents/Quarter1Lesson2.pdf';
-  static const quarter1Lesson3 = 'assets/documents/Quarter1Lesson3.pdf';
-  static const quarter1Lesson4 = 'assets/documents/Quarter1Lesson4.pdf';
+  static const grade5quarter1Lesson1 =
+      'assets/documents/Grade5Quarter1Lesson1.pdf';
+  static const grade5quarter1Lesson2 =
+      'assets/documents/Grade5Quarter1Lesson2.pdf';
+  static const grade5quarter1Lesson3 =
+      'assets/documents/Grade5Quarter1Lesson3.pdf';
+  static const grade5quarter1Lesson4 =
+      'assets/documents/Grade5Quarter1Lesson4.pdf';
 }
 
 class StorageFields {
@@ -65,6 +69,7 @@ class UserFields {
   static const String idNumber = 'idNumber';
   static const String verificationImage = 'verificationImage';
   static const String moduleProgresses = 'moduleProgresses';
+  static const String gradeLevel = 'gradeLevel';
 }
 
 class SectionFields {

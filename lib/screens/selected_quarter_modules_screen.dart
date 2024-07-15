@@ -45,7 +45,7 @@ class _SelectedQuarterModulesScreenState
           Map<dynamic, dynamic> moduleProgresses = {};
           moduleProgresses['${ModuleProgressFields.quarter}${widget.quarter}'] =
               {};
-          for (var module in Quarter1Modules) {
+          for (var module in Grade5Quarter1Modules) {
             moduleProgresses['${ModuleProgressFields.quarter}${widget.quarter}']
                 [module.index.toString()] = {
               ModuleProgressFields.title: module.title,
