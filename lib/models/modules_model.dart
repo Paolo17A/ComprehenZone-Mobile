@@ -26,3 +26,18 @@ final List<ModulesModel> Grade5Quarter1Modules = [
       title: 'Inferring the Meaning of Clipped Words Using Context Clues',
       documentPath: DocumentPaths.grade5quarter1Lesson4),
 ];
+
+final List<ModulesModel> Grade6Quarter2Modules = [
+  ModulesModel(
+      index: 1,
+      title: 'Explore Significant Information',
+      documentPath: DocumentPaths.grade6quarter2Lesson1),
+  ModulesModel(
+      index: 2,
+      title: 'Recognizing Propaganda Devices',
+      documentPath: DocumentPaths.grade6quarter2Lesson2),
+  ModulesModel(
+      index: 3,
+      title: 'Getting Immersed in Multimedia information',
+      documentPath: DocumentPaths.grade6quarter2Lesson3),
+];

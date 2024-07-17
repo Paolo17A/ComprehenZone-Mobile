@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comprehenzone_mobile/models/modules_model.dart';
 import 'package:comprehenzone_mobile/providers/loading_provider.dart';
-import 'package:comprehenzone_mobile/screens/view_module_screen.dart';
 import 'package:comprehenzone_mobile/widgets/custom_miscellaneous_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_padding_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_text_widgets.dart';
@@ -27,6 +26,7 @@ class SelectedQuarterModulesScreen extends ConsumerStatefulWidget {
 
 class _SelectedQuarterModulesScreenState
     extends ConsumerState<SelectedQuarterModulesScreen> {
+  String gradeLevel = '';
   List<DocumentSnapshot> moduleDocs = [];
   //Map<dynamic, dynamic> moduleProgresses = {};
   @override
@@ -39,9 +39,9 @@ class _SelectedQuarterModulesScreenState
         ref.read(loadingProvider).toggleLoading(true);
         final user = await getCurrentUserDoc();
         final userData = user.data() as Map<dynamic, dynamic>;
-
+        gradeLevel = userData[UserFields.gradeLevel];
         //  Handle module progresses
-        if (!userData.containsKey(UserFields.moduleProgresses)) {
+        /*if (!userData.containsKey(UserFields.moduleProgresses)) {
           Map<dynamic, dynamic> moduleProgresses = {};
           moduleProgresses['${ModuleProgressFields.quarter}${widget.quarter}'] =
               {};
@@ -56,7 +56,7 @@ class _SelectedQuarterModulesScreenState
               .collection(Collections.users)
               .doc(FirebaseAuth.instance.currentUser!.uid)
               .update({UserFields.moduleProgresses: moduleProgresses});
-        }
+        }*/
         List<dynamic> assignedSections = userData[UserFields.assignedSections];
         List<DocumentSnapshot> teacherDocs =
             await getSectionTeacherDoc(assignedSections.first);
@@ -93,7 +93,10 @@ class _SelectedQuarterModulesScreenState
               children: [
                 Gap(40),
                 _quarterHeader(),
-                if (widget.quarter == 1) _firstQuarterModules(),
+                if (gradeLevel == '5' && widget.quarter == 1)
+                  _quarterModulesStreamBuilder(Grade5Quarter1Modules)
+                else if (gradeLevel == '6' && widget.quarter == 2)
+                  _quarterModulesStreamBuilder(Grade6Quarter2Modules),
                 _uploadedQuarters(),
               ],
             ),
@@ -112,7 +115,7 @@ class _SelectedQuarterModulesScreenState
             fontSize: 28));
   }
 
-  Widget _firstQuarterModules() {
+  Widget _quarterModulesStreamBuilder(List<ModulesModel> quarterModules) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection(Collections.users)
@@ -127,54 +130,59 @@ class _SelectedQuarterModulesScreenState
           final userData = snapshot.data!.data() as Map<dynamic, dynamic>;
           Map<dynamic, dynamic> moduleProgresses =
               userData[UserFields.moduleProgresses];
-
-          return vertical20Pix(
-              child: Container(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  //height: 500,
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 4), color: widget.color),
-                  child: Column(
-                      children: Quarter1Modules.map((module) {
-                    String title = module.title;
-                    int index = module.index;
-                    num progress = moduleProgresses[
-                            '${ModuleProgressFields.quarter}${widget.quarter}'][
-                        module.index.toString()][ModuleProgressFields.progress];
-                    return TextButton(
-                        onPressed: index == 1 ||
-                                moduleProgresses[
-                                                '${ModuleProgressFields.quarter}${widget.quarter}']
-                                            [(module.index - 1).toString()]
-                                        [ModuleProgressFields.progress] ==
-                                    1
-                            ? () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => ViewModuleScreen(
-                                        quarter: widget.quarter.toString(),
-                                        index: module.index.toString(),
-                                        documentPath: module.documentPath)))
-                            : null,
-                        child: Container(
-                          //height: 50,
-                          decoration:
-                              BoxDecoration(border: Border.all(width: 2)),
-                          padding: EdgeInsets.all(4),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                blackInterBold(title,
-                                    fontSize: 20, textAlign: TextAlign.justify),
-                                all10Pix(
-                                  child: blackInterRegular(
-                                      'Progress: ${(progress * 100).toStringAsFixed(2)}%'),
-                                )
-                              ]),
-                        ));
-                  }).toList())));
+          Map<dynamic, dynamic> quarterMap = moduleProgresses[
+              '${ModuleProgressFields.quarter}${widget.quarter}'];
+          return _quarterModuleEntry(quarterMap, quarterModules);
         }
       },
     );
+  }
+
+  Widget _quarterModuleEntry(
+      Map<dynamic, dynamic> quarterMap, List<ModulesModel> quarterModules) {
+    return vertical20Pix(
+        child: Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            //height: 500,
+            decoration: BoxDecoration(
+                border: Border.all(width: 4), color: widget.color),
+            child: Column(
+                children: quarterModules.map((module) {
+              String title = module.title;
+              int index = module.index;
+
+              bool hasStarted = quarterMap.containsKey(index.toString());
+              num progress = hasStarted
+                  ? quarterMap[index.toString()][ModuleProgressFields.progress]
+                  : 0;
+              return TextButton(
+                  onPressed: index == 1 ||
+                          hasStarted ||
+                          (quarterMap.length == index - 1 &&
+                              quarterMap[(index - 1).toString()]
+                                      [ModuleProgressFields.progress] ==
+                                  1)
+                      ? () => NavigatorRoutes.viewModule(context,
+                          quarter: widget.quarter.toString(),
+                          index: index.toString(),
+                          documentPath: module.documentPath)
+                      : null,
+                  child: Container(
+                    //height: 50,
+                    decoration: BoxDecoration(border: Border.all(width: 2)),
+                    padding: EdgeInsets.all(4),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          blackInterBold(title,
+                              fontSize: 20, textAlign: TextAlign.left),
+                          all10Pix(
+                            child: blackInterRegular(
+                                'Progress: ${(progress * 100).toStringAsFixed(2)}%'),
+                          )
+                        ]),
+                  ));
+            }).toList())));
   }
 
   Widget _uploadedQuarters() {

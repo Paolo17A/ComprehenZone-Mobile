@@ -33,6 +33,12 @@ class DocumentPaths {
       'assets/documents/Grade5Quarter1Lesson3.pdf';
   static const grade5quarter1Lesson4 =
       'assets/documents/Grade5Quarter1Lesson4.pdf';
+  static const grade6quarter2Lesson1 =
+      'assets/documents/Grade6Quarter2Lesson1.pdf';
+  static const grade6quarter2Lesson2 =
+      'assets/documents/Grade6Quarter2Lesson2.pdf';
+  static const grade6quarter2Lesson3 =
+      'assets/documents/Grade6Quarter2Lesson3.pdf';
 }
 
 class StorageFields {

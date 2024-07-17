@@ -36,9 +36,20 @@ class _ViewModuleScreenState extends ConsumerState<ViewModuleScreen> {
         final user = await getCurrentUserDoc();
         final userData = user.data() as Map<dynamic, dynamic>;
         moduleProgresses = userData[UserFields.moduleProgresses];
-        currentProgress =
-            moduleProgresses['${ModuleProgressFields.quarter}${widget.quarter}']
-                [widget.index][ModuleProgressFields.progress];
+        Map<dynamic, dynamic> quarterMap = moduleProgresses[
+            '${ModuleProgressFields.quarter}${widget.quarter}'];
+        if (quarterMap.containsKey(widget.index)) {
+          currentProgress =
+              quarterMap[widget.index][ModuleProgressFields.progress];
+        } else {
+          quarterMap[widget.index] = {ModuleProgressFields.progress: 0.0};
+          moduleProgresses['${ModuleProgressFields.quarter}${widget.quarter}'] =
+              quarterMap;
+          await FirebaseFirestore.instance
+              .collection(Collections.users)
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .update({UserFields.moduleProgresses: moduleProgresses});
+        }
       } catch (error) {
         scaffoldMessenger.showSnackBar(
             SnackBar(content: Text('Error getting current progress: $error')));

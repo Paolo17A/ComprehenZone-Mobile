@@ -9,6 +9,7 @@ import 'package:comprehenzone_mobile/screens/profile_screen.dart';
 import 'package:comprehenzone_mobile/screens/selected_module_screen.dart';
 import 'package:comprehenzone_mobile/screens/selected_quarter_modules_screen.dart';
 import 'package:comprehenzone_mobile/screens/selected_quiz_result_screen.dart';
+import 'package:comprehenzone_mobile/screens/view_module_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavigatorRoutes {
@@ -22,6 +23,15 @@ class NavigatorRoutes {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) =>
             SelectedQuarterModulesScreen(quarter: quarter, color: color)));
+  }
+
+  static void viewModule(BuildContext context,
+      {required String quarter,
+      required String index,
+      required String documentPath}) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => ViewModuleScreen(
+            quarter: quarter, index: index, documentPath: documentPath)));
   }
 
   static void selectedModule(BuildContext context, {required String moduleID}) {
