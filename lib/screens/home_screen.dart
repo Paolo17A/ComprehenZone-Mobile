@@ -81,7 +81,17 @@ class HomeScreen extends StatelessWidget {
                         onPress: () => Navigator.of(context)
                             .pushNamed(NavigatorRoutes.grades),
                         left: -40,
-                        bottom: -10)
+                        bottom: -10),
+                    Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        height: 100,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white, width: 5),
+                            color: CustomColors.midnightBlue),
+                        child: TextButton(
+                            onPressed: () {},
+                            child: whiteInterBold('PRACTICE ORAL FLUENCY',
+                                fontSize: 28))),
                   ]),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.end,
