@@ -74,14 +74,14 @@ class HomeScreen extends StatelessWidget {
                             .pushNamed(NavigatorRoutes.quizSelect),
                         right: -40,
                         bottom: -30),
-                    homeButton(context,
+                    /*homeButton(context,
                         color: CustomColors.limeGreen,
                         label: 'GRADES AND FEEDBACK',
                         imagePath: ImagePaths.homeFeedback,
                         onPress: () => Navigator.of(context)
                             .pushNamed(NavigatorRoutes.grades),
                         left: -40,
-                        bottom: -10),
+                        bottom: -10),*/
                     Container(
                         width: MediaQuery.of(context).size.width * 0.7,
                         height: 100,
