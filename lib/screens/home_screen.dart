@@ -74,24 +74,14 @@ class HomeScreen extends StatelessWidget {
                             .pushNamed(NavigatorRoutes.quizSelect),
                         right: -40,
                         bottom: -30),
-                    /*homeButton(context,
-                        color: CustomColors.limeGreen,
-                        label: 'GRADES AND FEEDBACK',
+                    homeButton(context,
+                        color: CustomColors.midnightBlue,
+                        label: 'PRATICE ORAL FLUENCY',
                         imagePath: ImagePaths.homeFeedback,
                         onPress: () => Navigator.of(context)
-                            .pushNamed(NavigatorRoutes.grades),
+                            .pushNamed(NavigatorRoutes.speechSelect),
                         left: -40,
-                        bottom: -10),*/
-                    Container(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        height: 100,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white, width: 5),
-                            color: CustomColors.midnightBlue),
-                        child: TextButton(
-                            onPressed: () {},
-                            child: whiteInterBold('PRACTICE ORAL FLUENCY',
-                                fontSize: 28))),
+                        bottom: -10),
                   ]),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.end,

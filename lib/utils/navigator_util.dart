@@ -9,6 +9,7 @@ import 'package:comprehenzone_mobile/screens/profile_screen.dart';
 import 'package:comprehenzone_mobile/screens/selected_module_screen.dart';
 import 'package:comprehenzone_mobile/screens/selected_quarter_modules_screen.dart';
 import 'package:comprehenzone_mobile/screens/selected_quiz_result_screen.dart';
+import 'package:comprehenzone_mobile/screens/speech_select_screen.dart';
 import 'package:comprehenzone_mobile/screens/view_module_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -61,6 +62,7 @@ class NavigatorRoutes {
   }
 
   static const grades = 'grades';
+  static const speechSelect = 'speechSelect';
 }
 
 final Map<String, WidgetBuilder> routes = {
@@ -70,5 +72,6 @@ final Map<String, WidgetBuilder> routes = {
   NavigatorRoutes.editProfile: (context) => const EditProfileScreen(),
   NavigatorRoutes.quarterSelect: (context) => const QuarterSelectScreen(),
   NavigatorRoutes.quizSelect: (context) => const QuizSelectScreen(),
-  NavigatorRoutes.grades: (context) => const GradesScreen()
+  NavigatorRoutes.grades: (context) => const GradesScreen(),
+  NavigatorRoutes.speechSelect: (context) => const SpeechSelectScreen()
 };
