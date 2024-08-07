@@ -53,6 +53,7 @@ class Collections {
   static const String modules = 'modules';
   static const String quizzes = 'quizzes';
   static const String quizResults = 'quizResults';
+  static const String speechResults = 'speechResults';
 }
 
 class UserTypes {
@@ -76,6 +77,7 @@ class UserFields {
   static const String verificationImage = 'verificationImage';
   static const String moduleProgresses = 'moduleProgresses';
   static const String gradeLevel = 'gradeLevel';
+  static const String speechIndex = 'speechIndex';
 }
 
 class SectionFields {
@@ -137,6 +139,19 @@ class QuizResultFields {
   static const String quizID = 'quizID';
   static const String answers = 'answers';
   static const String grade = 'grade';
+}
+
+class SpeechResultFields {
+  static const String studentID = 'studentID';
+  static const String speechIndex = 'speechIndex';
+  static const String speechResults = 'speechResults';
+}
+
+class SpeechFields {
+  static const String breakdown = 'breakdown';
+  static const String similarity = 'similarity';
+  static const String confidence = 'confidence';
+  static const String average = 'average';
 }
 
 class PathParamters {

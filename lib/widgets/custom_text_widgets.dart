@@ -125,6 +125,19 @@ Text cyanHelveticaBold(String label,
       overflow: overflow);
 }
 
+Text midnightBlueHelveticaBold(String label,
+    {double? fontSize,
+    TextAlign textAlign = TextAlign.center,
+    TextOverflow? overflow,
+    TextDecoration? textDecoration}) {
+  return helveticaText(label,
+      color: CustomColors.midnightBlue,
+      fontWeight: FontWeight.bold,
+      fontSize: fontSize,
+      textAlign: textAlign,
+      overflow: overflow);
+}
+
 Text whiteInterRegular(String label,
     {double? fontSize,
     TextAlign textAlign = TextAlign.center,

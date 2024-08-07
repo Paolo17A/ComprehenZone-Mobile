@@ -1,3 +1,4 @@
+import 'package:comprehenzone_mobile/models/speech_model.dart';
 import 'package:comprehenzone_mobile/screens/answer_quiz_screen.dart';
 import 'package:comprehenzone_mobile/screens/edit_profile_screen.dart';
 import 'package:comprehenzone_mobile/screens/grades_screen.dart';
@@ -9,7 +10,9 @@ import 'package:comprehenzone_mobile/screens/profile_screen.dart';
 import 'package:comprehenzone_mobile/screens/selected_module_screen.dart';
 import 'package:comprehenzone_mobile/screens/selected_quarter_modules_screen.dart';
 import 'package:comprehenzone_mobile/screens/selected_quiz_result_screen.dart';
+import 'package:comprehenzone_mobile/screens/speech_result_screen.dart';
 import 'package:comprehenzone_mobile/screens/speech_select_screen.dart';
+import 'package:comprehenzone_mobile/screens/speech_sentence_screen.dart';
 import 'package:comprehenzone_mobile/screens/view_module_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -63,6 +66,20 @@ class NavigatorRoutes {
 
   static const grades = 'grades';
   static const speechSelect = 'speechSelect';
+
+  static void speechSentence(BuildContext context,
+      {required int speechIndex, required SpeechModel speechModel}) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => SpeechSentenceScreen(
+            speechIndex: speechIndex, speechModel: speechModel)));
+  }
+
+  static void selectedSpeechResult(BuildContext context,
+      {required String speechResultID, required SpeechModel speechModel}) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => SpeechResultScreen(
+            speechResultID: speechResultID, speechModel: speechModel)));
+  }
 }
 
 final Map<String, WidgetBuilder> routes = {

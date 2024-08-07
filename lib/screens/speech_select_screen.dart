@@ -1,6 +1,8 @@
 import 'package:comprehenzone_mobile/models/speech_model.dart';
 import 'package:comprehenzone_mobile/providers/loading_provider.dart';
 import 'package:comprehenzone_mobile/utils/color_util.dart';
+import 'package:comprehenzone_mobile/utils/firebase_util.dart';
+import 'package:comprehenzone_mobile/utils/navigator_util.dart';
 import 'package:comprehenzone_mobile/widgets/custom_miscellaneous_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_padding_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_text_widgets.dart';
@@ -18,6 +20,26 @@ class SpeechSelectScreen extends ConsumerStatefulWidget {
 }
 
 class _SpeechSelectScreenState extends ConsumerState<SpeechSelectScreen> {
+  int currentSpeechIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
+      try {
+        ref.read(loadingProvider).toggleLoading(true);
+        final userDoc = await getCurrentUserDoc();
+        final userData = userDoc.data() as Map<dynamic, dynamic>;
+        currentSpeechIndex = userData[UserFields.speechIndex];
+        ref.read(loadingProvider).toggleLoading(false);
+      } catch (error) {
+        ref.read(loadingProvider).toggleLoading(false);
+        scaffoldMessenger.showSnackBar(SnackBar(
+            content: Text('Error getting current speech index: $error')));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +76,18 @@ class _SpeechSelectScreenState extends ConsumerState<SpeechSelectScreen> {
         itemBuilder: (context, index) {
           return vertical10Pix(
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    if (currentSpeechIndex == index + 1) {
+                      NavigatorRoutes.speechSentence(context,
+                          speechIndex: index + 1,
+                          speechModel: speechCategories[index]);
+                    } else if (currentSpeechIndex > index + 1) {
+                      NavigatorRoutes.selectedSpeechResult(context,
+                          speechResultID:
+                              await getThisSpeechResultIDByIndex(index + 1),
+                          speechModel: speechCategories[index]);
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: CustomColors.midnightBlue),
                   child: whiteImpactBold(speechCategories[index].category,

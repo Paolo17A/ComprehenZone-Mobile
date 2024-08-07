@@ -7,14 +7,6 @@ class SpeechModel {
       {required this.category, required this.sentences, required this.index});
 }
 
-List<List<SpeechModel>> speechLevels = [
-  [speechCategories[0], speechCategories[1]],
-  [speechCategories[2], speechCategories[3]],
-  [speechCategories[4], speechCategories[5]],
-  [speechCategories[6], speechCategories[7]],
-  [speechCategories[8], speechCategories[9]],
-];
-
 SpeechModel? getSpeeechByIndex(int index) {
   for (var model in speechCategories) {
     if (model.index == index) {

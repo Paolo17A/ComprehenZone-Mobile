@@ -6,6 +6,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:comprehenzone_mobile/models/speech_model.dart';
 import 'package:comprehenzone_mobile/providers/profile_image_url_provider.dart';
 import 'package:comprehenzone_mobile/utils/navigator_util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -128,7 +129,8 @@ Future registerNewUser(BuildContext context, WidgetRef ref,
       UserFields.profileImageURL: '',
       UserFields.idNumber: idNumberController.text.trim(),
       UserFields.isVerified: false,
-      UserFields.assignedSections: []
+      UserFields.assignedSections: [],
+      UserFields.speechIndex: 1
     });
 
     final storageRef = FirebaseStorage.instance
@@ -428,4 +430,63 @@ Future<List<DocumentSnapshot>> getUserQuizResults() async {
           isEqualTo: FirebaseAuth.instance.currentUser!.uid)
       .get();
   return quizResults.docs.map((e) => e as DocumentSnapshot).toList();
+}
+
+//==============================================================================
+//SPEECH RESULTS================================================================
+//==============================================================================
+
+Future submitSpeechAnswers(BuildContext context, WidgetRef ref,
+    {required int speechIndex,
+    required List<dynamic> sentenceData,
+    required SpeechModel speechModel}) async {
+  final navigator = Navigator.of(context);
+  final scaffoldMessenger = ScaffoldMessenger.of(context);
+  try {
+    ref.read(loadingProvider).toggleLoading(true);
+
+    //  Create speech result entry
+    final speechResultReference = await FirebaseFirestore.instance
+        .collection(Collections.speechResults)
+        .add({
+      SpeechResultFields.studentID: FirebaseAuth.instance.currentUser!.uid,
+      SpeechResultFields.speechIndex: speechIndex,
+      SpeechResultFields.speechResults: sentenceData
+    });
+
+    await FirebaseFirestore.instance
+        .collection(Collections.users)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({UserFields.speechIndex: speechIndex + 1});
+    //  Once all the asynchronouse functions are done, we go to the QuizResults Screen and pass all necessary parameters
+    ref.read(loadingProvider).toggleLoading(false);
+    navigator.pop();
+    navigator.pushReplacementNamed(NavigatorRoutes.speechSelect);
+    NavigatorRoutes.selectedSpeechResult(context,
+        speechResultID: speechResultReference.id, speechModel: speechModel);
+  } catch (error) {
+    ref.read(loadingProvider).toggleLoading(false);
+    scaffoldMessenger.showSnackBar(
+        SnackBar(content: Text('Error submitting speech answers: $error')));
+  }
+}
+
+Future<DocumentSnapshot> getThisSpeechResult(String speechResultID) async {
+  return await FirebaseFirestore.instance
+      .collection(Collections.speechResults)
+      .doc(speechResultID)
+      .get();
+}
+
+Future<String> getThisSpeechResultIDByIndex(int index) async {
+  final speechResultDocs = await FirebaseFirestore.instance
+      .collection(Collections.speechResults)
+      .where(SpeechResultFields.speechIndex, isEqualTo: index)
+      .where(SpeechResultFields.studentID,
+          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      .get();
+  if (speechResultDocs.docs.isNotEmpty) {
+    return speechResultDocs.docs.first.id;
+  }
+  return '';
 }
