@@ -95,8 +95,20 @@ class _SelectedQuarterModulesScreenState
                 _quarterHeader(),
                 if (gradeLevel == '5' && widget.quarter == 1)
                   _quarterModulesStreamBuilder(Grade5Quarter1Modules)
+                else if (gradeLevel == '5' && widget.quarter == 2)
+                  _quarterModulesStreamBuilder(Grade5Quarter2Modules)
+                else if (gradeLevel == '5' && widget.quarter == 3)
+                  _quarterModulesStreamBuilder(Grade5Quarter3Modules)
+                else if (gradeLevel == '5' && widget.quarter == 4)
+                  _quarterModulesStreamBuilder(Grade5Quarter4Modules)
+                else if (gradeLevel == '6' && widget.quarter == 1)
+                  _quarterModulesStreamBuilder(Grade6Quarter1Modules)
                 else if (gradeLevel == '6' && widget.quarter == 2)
-                  _quarterModulesStreamBuilder(Grade6Quarter2Modules),
+                  _quarterModulesStreamBuilder(Grade6Quarter2Modules)
+                else if (gradeLevel == '6' && widget.quarter == 3)
+                  _quarterModulesStreamBuilder(Grade6Quarter3Modules)
+                else if (gradeLevel == '6' && widget.quarter == 4)
+                  _quarterModulesStreamBuilder(Grade6Quarter4Modules),
                 _uploadedQuarters(),
               ],
             ),
@@ -116,6 +128,7 @@ class _SelectedQuarterModulesScreenState
   }
 
   Widget _quarterModulesStreamBuilder(List<ModulesModel> quarterModules) {
+    if (quarterModules.isEmpty) return Container();
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection(Collections.users)

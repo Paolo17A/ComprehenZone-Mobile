@@ -33,12 +33,47 @@ class DocumentPaths {
       'assets/documents/Grade5Quarter1Lesson3.pdf';
   static const grade5quarter1Lesson4 =
       'assets/documents/Grade5Quarter1Lesson4.pdf';
+  static const grade5quarter2Lesson1 =
+      'assets/documents/Grade5Quarter2Lesson1.pdf';
+  static const grade5quarter2Lesson2 =
+      'assets/documents/Grade5Quarter2Lesson2.pdf';
+  static const grade5quarter2Lesson3 =
+      'assets/documents/Grade5Quarter2Lesson3.pdf';
+  static const grade5quarter2Lesson4 =
+      'assets/documents/Grade5Quarter2Lesson4.pdf';
+  static const grade5quarter2Lesson5 =
+      'assets/documents/Grade5Quarter2Lesson5.pdf';
+  static const grade5quarter2Lesson6 =
+      'assets/documents/Grade5Quarter2Lesson6.pdf';
+  static const grade5quarter3Lesson1 =
+      'assets/documents/Grade5Quarter3Lesson1.pdf';
+  static const grade5quarter3Lesson2 =
+      'assets/documents/Grade5Quarter3Lesson2.pdf';
+  static const grade5quarter3Lesson3 =
+      'assets/documents/Grade5Quarter3Lesson3.pdf';
+  static const grade5quarter3Lesson4 =
+      'assets/documents/Grade5Quarter3Lesson4.pdf';
+  static const grade5quarter4Lesson1 =
+      'assets/documents/Grade5Quarter4Lesson1.pdf';
+  static const grade5quarter4Lesson2 =
+      'assets/documents/Grade5Quarter4Lesson2.pdf';
+  static const grade5quarter4Lesson3 =
+      'assets/documents/Grade5Quarter4Lesson3.pdf';
+  static const grade5quarter4Lesson4 =
+      'assets/documents/Grade5Quarter4Lesson4.pdf';
+  static const grade5quarter4Lesson5 =
+      'assets/documents/Grade5Quarter4Lesson5.pdf';
+  //  GRADE 6
   static const grade6quarter2Lesson1 =
       'assets/documents/Grade6Quarter2Lesson1.pdf';
   static const grade6quarter2Lesson2 =
       'assets/documents/Grade6Quarter2Lesson2.pdf';
   static const grade6quarter2Lesson3 =
       'assets/documents/Grade6Quarter2Lesson3.pdf';
+  static const grade6quarter3Lesson1 =
+      'assets/documents/Grade6Quarter3Lesson1.pdf';
+  static const grade6quarter3Lesson2 =
+      'assets/documents/Grade6Quarter3Lesson2.pdf';
 }
 
 class StorageFields {
