@@ -64,6 +64,10 @@ class DocumentPaths {
   static const grade5quarter4Lesson5 =
       'assets/documents/Grade5Quarter4Lesson5.pdf';
   //  GRADE 6
+  static const grade6quarter1Lesson1 =
+      'assets/documents/Grade6Quarter1Lesson1.pdf';
+  static const grade6quarter1Lesson2 =
+      'assets/documents/Grade6Quarter1Lesson2.pdf';
   static const grade6quarter2Lesson1 =
       'assets/documents/Grade6Quarter2Lesson1.pdf';
   static const grade6quarter2Lesson2 =
