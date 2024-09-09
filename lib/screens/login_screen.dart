@@ -1,10 +1,8 @@
 import 'package:comprehenzone_mobile/providers/loading_provider.dart';
-import 'package:comprehenzone_mobile/widgets/custom_miscellaneous_widgets.dart';
-import 'package:comprehenzone_mobile/widgets/custom_padding_widgets.dart';
 import 'package:comprehenzone_mobile/utils/string_util.dart';
+import 'package:comprehenzone_mobile/widgets/custom_miscellaneous_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gap/gap.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -35,21 +33,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ref.read(loadingProvider).isLoading,
             Stack(
               children: [
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(ImagePaths.loginBG),
-                            fit: BoxFit.fill))),
                 SingleChildScrollView(
                     child: Column(
                   children: [
-                    Gap(40),
-                    all20Pix(
-                        child: loginFieldsContainer(context, ref,
-                            emailController: emailController,
-                            passwordController: passwordController)),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                                offset: Offset(0, 2),
+                                blurRadius: 4,
+                                spreadRadius: 1)
+                          ],
+                          image: DecorationImage(
+                              image: AssetImage(ImagePaths.schoolBG),
+                              fit: BoxFit.cover)),
+                    ),
+                    loginFieldsContainer(context, ref,
+                        emailController: emailController,
+                        passwordController: passwordController)
                   ],
                 ))
               ],

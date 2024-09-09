@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:comprehenzone_mobile/utils/color_util.dart';
 import 'package:comprehenzone_mobile/utils/navigator_util.dart';
 import 'package:comprehenzone_mobile/widgets/custom_miscellaneous_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_padding_widgets.dart';
@@ -57,20 +58,29 @@ class _QuizSelectScreenState extends ConsumerState<QuizSelectScreen> {
         Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(ImagePaths.quizGB), fit: BoxFit.cover)),
-            padding: EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Gap(40),
-                whiteImpactBold('QUIZZES AND EXAMS', fontSize: 32),
-                vertical20Pix(
-                    child: Column(
-                        children: quizDocs
-                            .map((quiz) => quizEntryFutureBuilder(quiz))
-                            .toList()))
-              ],
+            padding: EdgeInsets.all(10),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: CustomColors.olympicBlue,
+                  borderRadius: BorderRadius.circular(20)),
+              padding: EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Gap(40),
+                  Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(width: 4, color: Colors.white),
+                          color: CustomColors.grass),
+                      padding: EdgeInsets.all(10),
+                      child: blackHelveticaBold('QUIZZES AND EXAMS',
+                          fontSize: 28)),
+                  vertical20Pix(
+                      child: Column(
+                          children: quizDocs
+                              .map((quiz) => quizEntryFutureBuilder(quiz))
+                              .toList()))
+                ],
+              ),
             )),
       ),
     );
@@ -119,9 +129,16 @@ class _QuizSelectScreenState extends ConsumerState<QuizSelectScreen> {
         },
         child: Container(
             width: MediaQuery.of(context).size.width * 0.9,
-            //height: 70,
-            decoration: BoxDecoration(color: Colors.white),
-            child: Center(child: limeGreenImpactBold(title, fontSize: 28))),
+            decoration: BoxDecoration(
+                border: Border.all(width: 4, color: Colors.white),
+                color: CustomColors.grass),
+            padding: EdgeInsets.all(10),
+            child: Center(
+                child: blackInterBold(title,
+                    fontSize: 20,
+                    textAlign: TextAlign.left,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis))),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:comprehenzone_mobile/providers/loading_provider.dart';
 import 'package:comprehenzone_mobile/utils/firebase_util.dart';
+import 'package:comprehenzone_mobile/widgets/custom_button_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_miscellaneous_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_padding_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_text_widgets.dart';
@@ -146,10 +147,7 @@ class _AnswerQuizScreenState extends ConsumerState<AnswerQuizScreen> {
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(ImagePaths.quizGB), fit: BoxFit.cover)),
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.all(10),
             child: Column(
               children: [
                 Gap(40),
@@ -157,7 +155,6 @@ class _AnswerQuizScreenState extends ConsumerState<AnswerQuizScreen> {
                 if (!ref.read(loadingProvider).isLoading &&
                     quizQuestions.isNotEmpty)
                   _quizQuestionWidgets(),
-                _bottomNavigatorButtons()
               ],
             ),
           )),
@@ -166,8 +163,14 @@ class _AnswerQuizScreenState extends ConsumerState<AnswerQuizScreen> {
 
   Widget _quizTitle() {
     return vertical20Pix(
-      child: interText(title,
-          fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black),
+      child: Container(
+        decoration: BoxDecoration(
+            color: CustomColors.olympicBlue,
+            borderRadius: BorderRadius.circular(20)),
+        padding: EdgeInsets.all(10),
+        child: interText(title,
+            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+      ),
     );
   }
 
@@ -175,7 +178,7 @@ class _AnswerQuizScreenState extends ConsumerState<AnswerQuizScreen> {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-          color: CustomColors.midnightBlue.withOpacity(0.3),
+          color: CustomColors.olympicBlue,
           borderRadius: BorderRadius.circular(30)),
       padding: EdgeInsets.all(15),
       child: Column(
@@ -188,8 +191,10 @@ class _AnswerQuizScreenState extends ConsumerState<AnswerQuizScreen> {
               answer: '${option.key}) ${option.value}',
               onTap: () => _answerQuestion(option.key),
               isSelected: _checkIfSelected(option.key),
+              color: CustomColors.getLetterColor(option.key),
             );
-          }).toList()
+          }).toList(),
+          _bottomNavigatorButtons()
         ],
       ),
     );
@@ -197,13 +202,12 @@ class _AnswerQuizScreenState extends ConsumerState<AnswerQuizScreen> {
 
   Widget _questionContainer(String question) {
     return vertical10Pix(
-      child: Row(
-        children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: blackInterRegular(question, fontSize: 20))
-        ],
-      ),
+      child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(border: Border.all()),
+          padding: EdgeInsets.all(4),
+          child: blackInterRegular(question,
+              fontSize: 20, textAlign: TextAlign.left)),
     );
   }
 
@@ -215,14 +219,10 @@ class _AnswerQuizScreenState extends ConsumerState<AnswerQuizScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              TextButton(
-                  onPressed: _previousQuestion,
-                  child: blackInterBold('< PREV',
-                      textDecoration: TextDecoration.underline)),
-              TextButton(
-                  onPressed: _nextQuestion,
-                  child: blackInterBold('NEXT >',
-                      textDecoration: TextDecoration.underline))
+              blueBorderElevatedButton(
+                  label: '< PREV', onPress: _previousQuestion, height: 40),
+              blueBorderElevatedButton(
+                  label: 'NEXT >', onPress: _nextQuestion, height: 40)
             ],
           ),
         ],

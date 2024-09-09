@@ -7,11 +7,13 @@ Text interText(String label,
     FontWeight? fontWeight,
     Color? color,
     TextAlign? textAlign,
+    int? maxLines,
     TextOverflow? overflow}) {
   return Text(
     label,
     textAlign: textAlign,
     overflow: overflow,
+    maxLines: maxLines,
     style: GoogleFonts.inter(
         fontSize: fontSize, fontWeight: fontWeight, color: color),
   );
@@ -22,11 +24,13 @@ Text helveticaText(String label,
     FontWeight? fontWeight,
     Color? color,
     TextAlign? textAlign,
+    int? maxLines,
     TextOverflow? overflow}) {
   return Text(
     label,
     textAlign: textAlign,
     overflow: overflow,
+    maxLines: maxLines,
     style: GoogleFonts.arimo(
         fontSize: fontSize, fontWeight: fontWeight, color: color),
   );
@@ -51,10 +55,39 @@ Text blackHelveticaBold(String label,
     {double? fontSize,
     TextAlign textAlign = TextAlign.center,
     TextOverflow? overflow,
+    int? maxLines,
     TextDecoration? textDecoration}) {
   return helveticaText(label,
       color: Colors.black,
       fontWeight: FontWeight.bold,
+      fontSize: fontSize,
+      textAlign: textAlign,
+      maxLines: maxLines,
+      overflow: overflow);
+}
+
+Text whiteHelveticaBold(String label,
+    {double? fontSize,
+    TextAlign textAlign = TextAlign.center,
+    TextOverflow? overflow,
+    int? maxLines,
+    TextDecoration? textDecoration}) {
+  return helveticaText(label,
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: fontSize,
+      textAlign: textAlign,
+      maxLines: maxLines,
+      overflow: overflow);
+}
+
+Text blackHelveticaRegular(String label,
+    {double? fontSize,
+    TextAlign textAlign = TextAlign.center,
+    TextOverflow? overflow,
+    TextDecoration? textDecoration}) {
+  return helveticaText(label,
+      color: Colors.black,
       fontSize: fontSize,
       textAlign: textAlign,
       overflow: overflow);
@@ -86,7 +119,7 @@ Text whiteImpactBold(String label,
       overflow: overflow);
 }
 
-Text lightGreenImpactBold(String label,
+/*Text lightGreenImpactBold(String label,
     {double? fontSize,
     TextAlign textAlign = TextAlign.center,
     TextOverflow? overflow,
@@ -123,7 +156,7 @@ Text cyanHelveticaBold(String label,
       fontSize: fontSize,
       textAlign: textAlign,
       overflow: overflow);
-}
+}*/
 
 Text midnightBlueHelveticaBold(String label,
     {double? fontSize,
@@ -168,10 +201,12 @@ Text blackInterBold(String label,
     {double? fontSize,
     TextAlign textAlign = TextAlign.center,
     TextOverflow? overflow,
+    int? maxLines,
     TextDecoration? textDecoration}) {
   return Text(label,
       textAlign: textAlign,
       overflow: overflow,
+      maxLines: maxLines,
       style: GoogleFonts.inter(
           fontSize: fontSize,
           color: Colors.black,

@@ -44,13 +44,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             ref.read(loadingProvider).isLoading,
             Stack(
               children: [
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(ImagePaths.loginBG),
-                            fit: BoxFit.fill))),
                 SingleChildScrollView(
                     child: all20Pix(
                         child: registerFieldsContainer(context, ref,

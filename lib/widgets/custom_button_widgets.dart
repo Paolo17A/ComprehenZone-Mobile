@@ -5,16 +5,31 @@ import '../utils/color_util.dart';
 import 'custom_padding_widgets.dart';
 import 'custom_text_widgets.dart';
 
-Widget loginButton({required Function onPress}) {
+Widget blueBorderElevatedButton(
+    {required String label,
+    required Function onPress,
+    double? width,
+    double? height}) {
   return all10Pix(
-      child: Container(
-    width: double.infinity,
-    decoration: BoxDecoration(
-        border: Border.all(width: 3), borderRadius: BorderRadius.circular(10)),
-    child: TextButton(
-        onPressed: () => onPress(),
-        child: blackInterBold('LOG-IN', fontSize: 20)),
-  ));
+    child: Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(
+              color: const Color.fromARGB(255, 28, 74, 145), width: 1)),
+      child: ElevatedButton(
+          onPressed: () => onPress(),
+          style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30))),
+          child: blackInterRegular(label)),
+    ),
+  );
+}
+
+Widget loginButton({required Function onPress}) {
+  return blueBorderElevatedButton(label: 'LOG-IN', onPress: () => onPress());
 }
 
 Widget registerButton({required Function onPress}) {
@@ -109,30 +124,6 @@ Widget uploadImageButton(String label, Function selectImage) {
           padding: const EdgeInsets.all(7), child: whiteInterBold(label)));
 }
 
-Widget navigatorButtons(BuildContext context,
-    {required int pageNumber,
-    required Function? onPrevious,
-    required Function? onNext,
-    Color fontColor = Colors.black}) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 20),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        pageButton(context,
-            label: 'PREV', onPress: onPrevious, fontColor: fontColor),
-        Padding(
-          padding: const EdgeInsets.all(5.5),
-          child:
-              Text(pageNumber.toString(), style: TextStyle(color: fontColor)),
-        ),
-        pageButton(context,
-            label: 'NEXT', onPress: onNext, fontColor: fontColor)
-      ],
-    ),
-  );
-}
-
 Widget pageButton(BuildContext context,
     {required Function? onPress,
     required String label,
@@ -218,20 +209,12 @@ Widget quarterButton(BuildContext context,
 }
 
 Widget logOutButton(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.all(20),
-    child: Container(
-      decoration: BoxDecoration(
-          border: Border.all(), borderRadius: BorderRadius.circular(20)),
-      child: ListTile(
-        leading: const Icon(Icons.logout, color: Colors.black),
-        title: blackInterBold('LOG-OUT'),
-        onTap: () {
-          FirebaseAuth.instance.signOut().then((value) {
-            Navigator.popUntil(context, (route) => route.isFirst);
-          });
-        },
-      ),
-    ),
-  );
+  return blueBorderElevatedButton(
+      label: 'Logout',
+      height: 30,
+      onPress: () {
+        FirebaseAuth.instance.signOut().then((value) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+        });
+      });
 }

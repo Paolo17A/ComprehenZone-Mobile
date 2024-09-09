@@ -15,43 +15,12 @@ class HomeScreen extends StatelessWidget {
       canPop: false,
       child: Scaffold(
         appBar: AppBar(),
-        drawer: Drawer(
-          backgroundColor: CustomColors.pearlWhite,
-          child: Column(
-            children: [
-              DrawerHeader(
-                  padding: EdgeInsets.zero,
-                  child: Container(color: CustomColors.paleCyan)),
-              Flexible(
-                  child: Column(
-                children: [
-                  ListTile(
-                      leading: Image.asset(ImagePaths.drawerHome, scale: 16),
-                      title: blackInterBold('HOME'),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      }),
-                  ListTile(
-                      leading: Image.asset(ImagePaths.drawerProfile, scale: 16),
-                      title: blackInterBold('PROFILE'),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context)
-                            .pushNamed(NavigatorRoutes.profile);
-                      })
-                ],
-              )),
-              logOutButton(context)
-            ],
-          ),
-        ),
+        drawer: _homeDrawer(context),
         extendBodyBehindAppBar: true,
         body: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(ImagePaths.homeBG), fit: BoxFit.cover)),
+            color: CustomColors.olympicBlue,
             padding: EdgeInsets.all(20),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,7 +28,7 @@ class HomeScreen extends StatelessWidget {
                   Column(children: [
                     Gap(50),
                     homeButton(context,
-                        color: CustomColors.paleCyan,
+                        color: CustomColors.grimGrey,
                         label: 'LEARNING MATERIALS',
                         imagePath: ImagePaths.homeBook,
                         onPress: () => Navigator.of(context)
@@ -67,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                         left: -30,
                         top: -5),
                     homeButton(context,
-                        color: CustomColors.grass,
+                        color: CustomColors.pastelOrange,
                         label: 'QUIZZES AND\nEXAM',
                         imagePath: ImagePaths.homeStudying,
                         onPress: () => Navigator.of(context)
@@ -75,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                         right: -40,
                         bottom: -30),
                     homeButton(context,
-                        color: CustomColors.midnightBlue,
+                        color: CustomColors.pastelPink,
                         label: 'PRATICE ORAL FLUENCY',
                         imagePath: ImagePaths.homeFeedback,
                         onPress: () => Navigator.of(context)
@@ -83,10 +52,48 @@ class HomeScreen extends StatelessWidget {
                         left: -40,
                         bottom: -10),
                   ]),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [Image.asset(ImagePaths.research, scale: 3)])
                 ])),
+      ),
+    );
+  }
+
+  Widget _homeDrawer(BuildContext context) {
+    return Drawer(
+      backgroundColor: CustomColors.navigatorBlue,
+      child: Column(
+        children: [
+          DrawerHeader(
+              padding: EdgeInsets.zero,
+              child: Container(
+                color: CustomColors.grimGrey,
+                child: Image.asset(ImagePaths.comprehenzoneLogo),
+              )),
+          Flexible(
+              child: Column(
+            children: [
+              ListTile(
+                  leading: Image.asset(ImagePaths.drawerHome, scale: 16),
+                  title: blackInterRegular('HOME', textAlign: TextAlign.left),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  }),
+              ListTile(
+                  leading: Image.asset(ImagePaths.drawerProfile, scale: 16),
+                  title:
+                      blackInterRegular('PROFILE', textAlign: TextAlign.left),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pushNamed(NavigatorRoutes.profile);
+                  })
+            ],
+          )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              logOutButton(context),
+            ],
+          )
+        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:comprehenzone_mobile/providers/profile_image_url_provider.dart';
+import 'package:comprehenzone_mobile/utils/color_util.dart';
 import 'package:comprehenzone_mobile/widgets/custom_padding_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_text_widgets.dart';
 import 'package:comprehenzone_mobile/utils/navigator_util.dart';
@@ -56,42 +57,46 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     ref.watch(loadingProvider);
     ref.watch(profileImageURLProvider);
     return Scaffold(
-        appBar: AppBar(actions: [
-          IconButton(
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(NavigatorRoutes.editProfile),
-              icon: Icon(Icons.edit, color: Colors.black))
-        ]),
-        extendBodyBehindAppBar: true,
+        appBar: AppBar(),
+        //extendBodyBehindAppBar: true,
         body: stackedLoadingContainer(
             context,
             ref.read(loadingProvider).isLoading,
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(ImagePaths.profileBG),
-                      fit: BoxFit.cover)),
               padding: EdgeInsets.all(20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Gap(40),
-                      blackHelveticaBold('STUDENT PROFILE', fontSize: 36),
-                      _profilePictureWidget(),
-                      _nameAndSectionWidget(),
-                      _birthDate(),
-                      Gap(20),
-                      _contactNumber(),
-                    ],
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [Image.asset(ImagePaths.profileID, scale: 4)])
-                ],
+              child: Container(
+                decoration: BoxDecoration(
+                    color: CustomColors.olympicBlue,
+                    borderRadius: BorderRadius.circular(30)),
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        blackHelveticaRegular('STUDENT PROFILE', fontSize: 28),
+                        _profilePictureWidget(),
+                        _nameAndSectionWidget(),
+                        _birthDate(),
+                        Gap(20),
+                        _contactNumber(),
+                      ],
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                      GestureDetector(
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(NavigatorRoutes.editProfile),
+                        child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(width: 2),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Icon(Icons.edit, size: 36)),
+                      )
+                    ])
+                  ],
+                ),
               ),
             )));
   }

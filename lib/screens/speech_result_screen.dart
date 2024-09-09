@@ -52,7 +52,6 @@ class _SpeechResultScreenState extends ConsumerState<SpeechResultScreen> {
     ref.watch(loadingProvider);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: CustomColors.midnightBlue,
         iconTheme: IconThemeData(color: Colors.white),
         title: whiteImpactBold(
             '${widget.speechModel.category.toUpperCase()} RESULTS'),
@@ -60,9 +59,6 @@ class _SpeechResultScreenState extends ConsumerState<SpeechResultScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(ImagePaths.quizGB), fit: BoxFit.cover)),
         child: switchedLoadingContainer(
           ref.read(loadingProvider).isLoading,
           SingleChildScrollView(
@@ -72,69 +68,84 @@ class _SpeechResultScreenState extends ConsumerState<SpeechResultScreen> {
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: CustomColors.midnightBlue),
-                    //height: 60,
+                        border: Border.all(
+                            color: CustomColors.midnightBlue, width: 4),
+                        color: CustomColors.olympicBlue),
                     width: double.infinity,
                     child: Center(
-                        child: whiteImpactBold(
+                        child: whiteHelveticaBold(
                             'You got an average pronounciation accuracy of ${calculateAverageConfidence(sentenceResults).toStringAsFixed(2)}%',
-                            fontSize: 24)),
+                            fontSize: 20)),
                   ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: sentenceResults.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(6),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                color: Color.fromARGB(255, 60, 118, 141),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                whiteInterBold(
-                                    '${index + 1}. ${widget.speechModel.sentences[index]}',
-                                    fontSize: 20,
-                                    textAlign: TextAlign.left),
-                                whiteInterBold(
-                                    'Confidence Level: ${(sentenceResults[index][SpeechFields.confidence] as double).toStringAsFixed(2)}%'),
-                                Gap(16),
-                                Container(
-                                  width: double.infinity,
-                                  //height: 100,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Wrap(
-                                        children: (sentenceResults[index]
-                                                    [SpeechFields.breakdown]
-                                                as List<dynamic>)
-                                            .map((word) {
-                                      final wordData =
-                                          word as Map<String, dynamic>;
-                                      return Text(
-                                        '${wordData.keys.first} ',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                            color: wordData.values.first
-                                                ? Colors.green
-                                                : Colors.red),
-                                      );
-                                    }).toList()),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      })
+                  vertical10Pix(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              color: CustomColors.midnightBlue, width: 4),
+                          color: CustomColors.olympicBlue),
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: sentenceResults.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(6),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.white, width: 2),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10))),
+                                padding: EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    whiteHelveticaBold(
+                                        '${index + 1}. ${widget.speechModel.sentences[index]}',
+                                        fontSize: 20,
+                                        textAlign: TextAlign.left),
+                                    whiteHelveticaBold(
+                                        'Confidence Level: ${(sentenceResults[index][SpeechFields.confidence] as double).toStringAsFixed(2)}%'),
+                                    Gap(16),
+                                    Container(
+                                      width: double.infinity,
+                                      //height: 100,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              color:
+                                                  CustomColors.backgroundBlue),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: Wrap(
+                                            children: (sentenceResults[index]
+                                                        [SpeechFields.breakdown]
+                                                    as List<dynamic>)
+                                                .map((word) {
+                                          final wordData =
+                                              word as Map<String, dynamic>;
+                                          return Text(
+                                            '${wordData.keys.first} ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                                color: wordData.values.first
+                                                    ? Colors.green
+                                                    : Colors.red),
+                                          );
+                                        }).toList()),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  )
                 ],
               ),
             ),

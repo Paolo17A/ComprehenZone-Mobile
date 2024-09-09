@@ -11,6 +11,8 @@ class CustomTextField extends StatefulWidget {
   final bool hasSearchButton;
   final Function? onSearchPress;
   final Color? fillColor;
+  final Color? textColor;
+
   const CustomTextField(
       {super.key,
       required this.text,
@@ -20,7 +22,8 @@ class CustomTextField extends StatefulWidget {
       this.enabled = true,
       this.hasSearchButton = false,
       this.onSearchPress,
-      this.fillColor});
+      this.fillColor,
+      this.textColor});
 
   @override
   State<CustomTextField> createState() => _LiliwECommerceTextFieldState();
@@ -48,16 +51,27 @@ class _LiliwECommerceTextFieldState extends State<CustomTextField> {
             widget.onSearchPress!();
           }
         },
-        style: const TextStyle(color: Colors.black),
+        style: TextStyle(color: widget.textColor ?? Colors.white),
         decoration: InputDecoration(
+            focusColor: Colors.white,
             alignLabelWithHint: true,
             labelText: widget.text,
             labelStyle: TextStyle(
-                color: Colors.black.withOpacity(0.5),
+                color: widget.textColor != null
+                    ? widget.textColor!.withOpacity(0.5)
+                    : Colors.white.withOpacity(0.5),
                 fontStyle: FontStyle.italic),
             filled: true,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             fillColor: widget.fillColor ?? Colors.transparent,
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: widget.textColor ?? CustomColors.dirtyPearl,
+                    width: 2)),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: widget.textColor ?? CustomColors.dirtyPearl,
+                    width: 2)),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: const BorderSide(width: 20)),
@@ -73,7 +87,7 @@ class _LiliwECommerceTextFieldState extends State<CustomTextField> {
                     },
                     icon: Icon(
                       isObscured ? Icons.visibility : Icons.visibility_off,
-                      color: Colors.black,
+                      color: Colors.white,
                     ))
                 : widget.hasSearchButton && widget.onSearchPress != null
                     ? Transform.scale(

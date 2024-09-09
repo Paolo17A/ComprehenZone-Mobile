@@ -8,7 +8,6 @@ import 'package:comprehenzone_mobile/widgets/custom_padding_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gap/gap.dart';
 
 import '../utils/string_util.dart';
 
@@ -50,14 +49,17 @@ class _SpeechSelectScreenState extends ConsumerState<SpeechSelectScreen> {
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(ImagePaths.quizGB), fit: BoxFit.cover)),
-            child: SingleChildScrollView(
-              child: all20Pix(
-                  child: Column(
-                children: [Gap(40), _speechHeader(), _speechButtons()],
-              )),
+            padding: EdgeInsets.all(10),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: CustomColors.olympicBlue,
+                  borderRadius: BorderRadius.circular(20)),
+              padding: EdgeInsets.all(10),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [_speechHeader(), _speechButtons()],
+                ),
+              ),
             ),
           )),
     );
@@ -65,7 +67,7 @@ class _SpeechSelectScreenState extends ConsumerState<SpeechSelectScreen> {
 
   Widget _speechHeader() {
     return vertical20Pix(
-        child: blackImpactBold('PRACTICE YOUR SPEECH', fontSize: 32));
+        child: blackHelveticaBold('PRACTICE YOUR SPEECH', fontSize: 32));
   }
 
   Widget _speechButtons() {
@@ -89,8 +91,8 @@ class _SpeechSelectScreenState extends ConsumerState<SpeechSelectScreen> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: CustomColors.midnightBlue),
-                  child: whiteImpactBold(speechCategories[index].category,
+                      backgroundColor: CustomColors.dirtyPearl),
+                  child: blackHelveticaBold(speechCategories[index].category,
                       fontSize: 20,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left)));

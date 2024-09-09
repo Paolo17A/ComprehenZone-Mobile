@@ -57,34 +57,39 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(),
-        extendBodyBehindAppBar: true,
         body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(ImagePaths.profileBG), fit: BoxFit.cover)),
           padding: EdgeInsets.all(20),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Gap(40),
-                blackHelveticaBold('EDIT PROFILE', fontSize: 36),
-                _profilePictureWidget(),
-                regularTextField(
-                    label: 'First Name', textController: firstNameController),
-                regularTextField(
-                    label: 'Last Name', textController: lastNameController),
-                vertical20Pix(
-                    child: saveChangesButton(
-                        onPress: () => updateProfile(context, ref,
-                            firstNameController: firstNameController,
-                            lastNameController: lastNameController))),
-                Gap(100),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [Image.asset(ImagePaths.profileID, scale: 4)])
-              ],
+          child: Container(
+            decoration: BoxDecoration(
+                color: CustomColors.olympicBlue,
+                borderRadius: BorderRadius.circular(30)),
+            padding: EdgeInsets.all(10),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  blackHelveticaRegular('EDIT PROFILE', fontSize: 36),
+                  _profilePictureWidget(),
+                  regularTextField(
+                      label: 'First Name',
+                      textController: firstNameController,
+                      textColor: Colors.black),
+                  regularTextField(
+                      label: 'Last Name',
+                      textController: lastNameController,
+                      textColor: Colors.black),
+                  vertical20Pix(
+                      child: saveChangesButton(
+                          onPress: () => updateProfile(context, ref,
+                              firstNameController: firstNameController,
+                              lastNameController: lastNameController))),
+                  Gap(100),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [Image.asset(ImagePaths.profileID, scale: 4)])
+                ],
+              ),
             ),
           ),
         ),
@@ -111,17 +116,15 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         Gap(10),
         Column(
           children: [
-            ElevatedButton(
-                onPressed: () => uploadProfilePicture(context, ref),
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: CustomColors.midnightBlue),
-                child: whiteInterBold('UPDATE PROFILE PICTURE', fontSize: 12)),
+            blueBorderElevatedButton(
+                label: 'UPDATE PICTURE',
+                height: 32,
+                onPress: () => uploadProfilePicture(context, ref)),
             Gap(4),
-            ElevatedButton(
-                onPressed: () => removeProfilePicture(context, ref),
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: CustomColors.midnightBlue),
-                child: whiteInterBold('REMOVE PROFILE PICTURE', fontSize: 12))
+            blueBorderElevatedButton(
+                label: 'REMOVE PICTURE',
+                height: 32,
+                onPress: () => removeProfilePicture(context, ref))
           ],
         )
       ],

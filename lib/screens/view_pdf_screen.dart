@@ -1,7 +1,6 @@
+import 'package:comprehenzone_mobile/utils/color_util.dart';
 import 'package:easy_pdf_viewer/easy_pdf_viewer.dart';
 import 'package:flutter/material.dart';
-
-import '../utils/string_util.dart';
 
 class ViewPDFScreen extends StatefulWidget {
   final String pdfURL;
@@ -22,9 +21,7 @@ class _ViewPDFScreenState extends State<ViewPDFScreen> {
         body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(ImagePaths.modulesBG), fit: BoxFit.cover)),
+          color: CustomColors.backgroundBlue,
           child: FutureBuilder(
             future: PDFDocument.fromURL(widget.pdfURL),
             builder: (context, snapshot) {

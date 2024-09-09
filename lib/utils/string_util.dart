@@ -1,6 +1,7 @@
 class ImagePaths {
   static const comprehenzoneLogo = 'assets/images/COMPREHENZONE LOGO.png';
-  static const loginBG = 'assets/images/BG WALLPAPER.png';
+  //static const loginBG = 'assets/images/BG WALLPAPER.png';
+  static const schoolBG = 'assets/images/school bg.jpg';
   static const frontPageLogo = 'assets/images/logo frontpage.png';
   static const homeBG = 'assets/images/FIRST PAGE OPTIONS BG.jpg';
   static const homeBook = 'assets/images/home book.png';
@@ -9,13 +10,13 @@ class ImagePaths {
   static const research = 'assets/images/research.png';
   static const drawerHome = 'assets/images/home.png';
   static const drawerProfile = 'assets/images/user.png';
-  static const profileBG = 'assets/images/PROFILE PAGE.jpg';
+  // static const profileBG = 'assets/images/PROFILE PAGE.jpg';
   static const profileUser = 'assets/images/profile-user.png';
   static const profileDateOfBirth = 'assets/images/date-of-birth.png';
   static const profileContactNumber = 'assets/images/mobile.png';
   static const profileID = 'assets/images/personal-id.png';
   static const defaultProfilePic = 'assets/images/student.png';
-  static const modulesBG = 'assets/images/LEARNING MATERIALS BG.jpg';
+  //static const modulesBG = 'assets/images/LEARNING MATERIALS BG.jpg';
   static const quarterBooks = 'assets/images/books.png';
   static const quarterEasyToUse = 'assets/images/easy-to-use.png';
   static const quarterIdea = 'assets/images/idea.png';

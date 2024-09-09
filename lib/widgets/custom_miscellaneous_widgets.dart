@@ -35,14 +35,26 @@ Widget loginFieldsContainer(BuildContext context, WidgetRef ref,
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Image.asset(ImagePaths.frontPageLogo, scale: 10),
-      blackInterBold('Login', fontSize: 40),
-      emailAddressTextField(emailController: emailController),
+      vertical20Pix(child: whiteInterRegular('WELCOME', fontSize: 28)),
+      all10Pix(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            whiteInterBold('Email Address', fontSize: 18),
+            CustomTextField(
+                text: 'Email Address',
+                controller: emailController,
+                textInputType: TextInputType.emailAddress,
+                displayPrefixIcon:
+                    Icon(Icons.email, color: CustomColors.dirtyPearl)),
+          ],
+        ),
+      ),
       all10Pix(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          blackInterBold('Password', fontSize: 18),
+          whiteInterBold('Password', fontSize: 18),
           CustomTextField(
               text: 'Password',
               controller: passwordController,
@@ -50,7 +62,8 @@ Widget loginFieldsContainer(BuildContext context, WidgetRef ref,
               onSearchPress: () => logInUser(context, ref,
                   emailController: emailController,
                   passwordController: passwordController),
-              displayPrefixIcon: const Icon(Icons.lock)),
+              displayPrefixIcon:
+                  Icon(Icons.lock, color: CustomColors.dirtyPearl)),
         ],
       )),
       Row(
@@ -58,7 +71,7 @@ Widget loginFieldsContainer(BuildContext context, WidgetRef ref,
         children: [
           TextButton(
               onPressed: () {},
-              child: blackInterBold('Forgot Password?',
+              child: whiteInterBold('Forgot Password?',
                   fontSize: 12, textDecoration: TextDecoration.underline))
         ],
       ),
@@ -150,7 +163,8 @@ Widget emailAddressTextField({required TextEditingController emailController}) {
 
 Widget passwordTextField(
     {required String label,
-    required TextEditingController passwordController}) {
+    required TextEditingController passwordController,
+    Color? textColor}) {
   return all10Pix(
       child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,13 +174,16 @@ Widget passwordTextField(
           text: label,
           controller: passwordController,
           textInputType: TextInputType.visiblePassword,
-          displayPrefixIcon: const Icon(Icons.lock)),
+          displayPrefixIcon:
+              Icon(Icons.lock, color: textColor ?? CustomColors.dirtyPearl)),
     ],
   ));
 }
 
 Widget regularTextField(
-    {required String label, required TextEditingController textController}) {
+    {required String label,
+    required TextEditingController textController,
+    Color? textColor}) {
   return all10Pix(
       child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,13 +193,16 @@ Widget regularTextField(
           text: label,
           controller: textController,
           textInputType: TextInputType.name,
+          textColor: textColor,
           displayPrefixIcon: null),
     ],
   ));
 }
 
 Widget numberTextField(
-    {required String label, required TextEditingController textController}) {
+    {required String label,
+    required TextEditingController textController,
+    Color? textColor}) {
   return all10Pix(
       child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,7 +218,9 @@ Widget numberTextField(
 }
 
 Widget multiLineTextField(
-    {required String label, required TextEditingController textController}) {
+    {required String label,
+    required TextEditingController textController,
+    Color? textColor}) {
   return all10Pix(
       child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,7 +273,7 @@ Container viewContentContainer(BuildContext context, {required Widget child}) {
   return Container(
       width: MediaQuery.of(context).size.width * 0.7,
       decoration: BoxDecoration(
-        color: CustomColors.paleCyan.withOpacity(0.5),
+        color: CustomColors.mediumSea,
         border: Border.all(color: Colors.black),
       ),
       child: child);
@@ -274,7 +296,7 @@ Widget viewContentEntryRow(BuildContext context,
 
 Widget viewFlexTextCell(String text,
     {required int flex,
-    backgroundColor = CustomColors.paleCyan,
+    backgroundColor = CustomColors.olympicBlue,
     Color textColor = Colors.black,
     Border customBorder =
         const Border.symmetric(horizontal: BorderSide(width: 3)),
@@ -303,13 +325,13 @@ Widget viewFlexTextCell(String text,
 Widget viewFlexLabelTextCell(String text, int flex) {
   return viewFlexTextCell(text,
       flex: flex,
-      backgroundColor: CustomColors.paleCyan,
+      backgroundColor: CustomColors.olympicBlue,
       textColor: Colors.black);
 }
 
 Widget viewFlexActionsCell(List<Widget> children,
     {required int flex,
-    backgroundColor = CustomColors.paleCyan,
+    backgroundColor = CustomColors.olympicBlue,
     Color textColor = Colors.black,
     Border customBorder =
         const Border.symmetric(horizontal: BorderSide(width: 3)),

@@ -82,23 +82,28 @@ class _SelectedQuizResultScreenState
       }),
       child: Scaffold(
         appBar: AppBar(),
-        extendBodyBehindAppBar: true,
         body: stackedLoadingContainer(
             context,
             ref.read(loadingProvider).isLoading,
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(ImagePaths.quizGB), fit: BoxFit.cover)),
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(10),
               child: SingleChildScrollView(
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     _quizTitle(),
-                    _quizScore(),
-                    _questionsAndAnswers()
+                    vertical10Pix(
+                      child: Container(
+                        decoration:
+                            BoxDecoration(color: CustomColors.olympicBlue),
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          children: [_quizScore(), _questionsAndAnswers()],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -108,19 +113,44 @@ class _SelectedQuizResultScreenState
   }
 
   Widget _quizTitle() {
-    return vertical20Pix(child: blackImpactBold(quizTitle, fontSize: 28));
+    return Container(
+        decoration: BoxDecoration(
+            color: CustomColors.olympicBlue,
+            border: Border.all(color: CustomColors.navigatorBlue)),
+        padding: EdgeInsets.all(10),
+        child:
+            blackInterBold(quizTitle, fontSize: 20, textAlign: TextAlign.left));
   }
 
   Widget _quizScore() {
     return Container(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
+          color: CustomColors.dirtyPearl,
           border: Border.all(width: 3),
-          borderRadius: BorderRadius.circular(10)),
-      padding: EdgeInsets.all(4),
-      child: blackInterBold(
-          'You got ${grade.toString()} out of ${quizQuestions.length.toString()} items correct.',
-          fontSize: 20),
+          borderRadius: BorderRadius.circular(20)),
+      child: Stack(
+        children: [
+          Positioned(
+              left: 0,
+              top: 0,
+              bottom: 0,
+              child: Container(
+                width: ((MediaQuery.of(context).size.width * 0.9) / 10) * grade,
+                decoration: BoxDecoration(
+                    color: CustomColors.correctGreen,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(1, 0), spreadRadius: 1, blurRadius: 4)
+                    ]),
+              )),
+          Center(
+              child: blackInterBold(
+                  'You got ${grade.toString()} out of ${quizQuestions.length.toString()} items correct.',
+                  fontSize: 16)),
+        ],
+      ),
     );
   }
 
@@ -130,7 +160,7 @@ class _SelectedQuizResultScreenState
         decoration: BoxDecoration(
             border: Border.all(width: 3),
             borderRadius: BorderRadius.circular(10)),
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(8),
         child: ListView.builder(
             shrinkWrap: true,
             padding: EdgeInsets.zero,
@@ -151,33 +181,34 @@ class _SelectedQuizResultScreenState
               return vertical10Pix(
                 child: Container(
                   decoration: BoxDecoration(
-                      color: CustomColors.grass.withOpacity(0.5),
                       border: Border.all(width: 2),
                       borderRadius: BorderRadius.circular(5)),
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      blackImpactBold(formattedQuestion),
-                      Gap(7),
+                      blackInterBold(formattedQuestion,
+                          textAlign: TextAlign.left),
+                      const Gap(7),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.8,
                         decoration: BoxDecoration(
-                            color: CustomColors.pearlWhite,
+                            color: isCorrect
+                                ? CustomColors.correctGreen
+                                : CustomColors.wrongRed,
                             border: Border.all(width: 2),
                             borderRadius: BorderRadius.circular(5)),
-                        padding: EdgeInsets.all(4),
+                        padding: const EdgeInsets.all(4),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             interText(yourAnswer,
-                                color:
-                                    isCorrect ? CustomColors.grass : Colors.red,
+                                color: Colors.black,
                                 fontWeight: FontWeight.bold),
                             if (!isCorrect)
                               interText(correctAnswer,
                                   fontWeight: FontWeight.bold,
-                                  color: CustomColors.grass)
+                                  color: Colors.black)
                           ],
                         ),
                       ),

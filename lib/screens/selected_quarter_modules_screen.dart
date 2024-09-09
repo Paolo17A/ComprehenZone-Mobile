@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comprehenzone_mobile/models/modules_model.dart';
 import 'package:comprehenzone_mobile/providers/loading_provider.dart';
+import 'package:comprehenzone_mobile/utils/color_util.dart';
 import 'package:comprehenzone_mobile/widgets/custom_miscellaneous_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_padding_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_text_widgets.dart';
@@ -84,33 +85,36 @@ class _SelectedQuarterModulesScreenState
         Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(ImagePaths.modulesBG), fit: BoxFit.cover)),
-          padding: EdgeInsets.all(20),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Gap(40),
-                _quarterHeader(),
-                if (gradeLevel == '5' && widget.quarter == 1)
-                  _quarterModulesStreamBuilder(Grade5Quarter1Modules)
-                else if (gradeLevel == '5' && widget.quarter == 2)
-                  _quarterModulesStreamBuilder(Grade5Quarter2Modules)
-                else if (gradeLevel == '5' && widget.quarter == 3)
-                  _quarterModulesStreamBuilder(Grade5Quarter3Modules)
-                else if (gradeLevel == '5' && widget.quarter == 4)
-                  _quarterModulesStreamBuilder(Grade5Quarter4Modules)
-                else if (gradeLevel == '6' && widget.quarter == 1)
-                  _quarterModulesStreamBuilder(Grade6Quarter1Modules)
-                else if (gradeLevel == '6' && widget.quarter == 2)
-                  _quarterModulesStreamBuilder(Grade6Quarter2Modules)
-                else if (gradeLevel == '6' && widget.quarter == 3)
-                  _quarterModulesStreamBuilder(Grade6Quarter3Modules)
-                else if (gradeLevel == '6' && widget.quarter == 4)
-                  _quarterModulesStreamBuilder(Grade6Quarter4Modules),
-                _uploadedQuarters(),
-              ],
+          padding: EdgeInsets.all(10),
+          child: Container(
+            decoration: BoxDecoration(
+                color: CustomColors.olympicBlue,
+                borderRadius: BorderRadius.circular(20)),
+            padding: EdgeInsets.all(10),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Gap(40),
+                  _quarterHeader(),
+                  if (gradeLevel == '5' && widget.quarter == 1)
+                    _quarterModulesStreamBuilder(Grade5Quarter1Modules)
+                  else if (gradeLevel == '5' && widget.quarter == 2)
+                    _quarterModulesStreamBuilder(Grade5Quarter2Modules)
+                  else if (gradeLevel == '5' && widget.quarter == 3)
+                    _quarterModulesStreamBuilder(Grade5Quarter3Modules)
+                  else if (gradeLevel == '5' && widget.quarter == 4)
+                    _quarterModulesStreamBuilder(Grade5Quarter4Modules)
+                  else if (gradeLevel == '6' && widget.quarter == 1)
+                    _quarterModulesStreamBuilder(Grade6Quarter1Modules)
+                  else if (gradeLevel == '6' && widget.quarter == 2)
+                    _quarterModulesStreamBuilder(Grade6Quarter2Modules)
+                  else if (gradeLevel == '6' && widget.quarter == 3)
+                    _quarterModulesStreamBuilder(Grade6Quarter3Modules)
+                  else if (gradeLevel == '6' && widget.quarter == 4)
+                    _quarterModulesStreamBuilder(Grade6Quarter4Modules),
+                  _uploadedQuarters(),
+                ],
+              ),
             ),
           ),
         ),
@@ -123,7 +127,7 @@ class _SelectedQuarterModulesScreenState
         decoration:
             BoxDecoration(border: Border.all(width: 4), color: widget.color),
         padding: EdgeInsets.all(10),
-        child: blackImpactBold('QUARTER ${widget.quarter.toString()}',
+        child: blackHelveticaBold('QUARTER ${widget.quarter.toString()}',
             fontSize: 28));
   }
 
@@ -182,13 +186,18 @@ class _SelectedQuarterModulesScreenState
                       : null,
                   child: Container(
                     //height: 50,
+                    width: MediaQuery.of(context).size.width * 0.9,
+
                     decoration: BoxDecoration(border: Border.all(width: 2)),
                     padding: EdgeInsets.all(4),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          blackInterBold(title,
-                              fontSize: 20, textAlign: TextAlign.left),
+                          blackHelveticaBold(title,
+                              fontSize: 20,
+                              maxLines: 2,
+                              textAlign: TextAlign.left,
+                              overflow: TextOverflow.ellipsis),
                           all10Pix(
                             child: blackInterRegular(
                                 'Progress: ${(progress * 100).toStringAsFixed(2)}%'),
@@ -202,7 +211,6 @@ class _SelectedQuarterModulesScreenState
     return vertical10Pix(
         child: Column(
       children: [
-        blackHelveticaBold('Uploaded Modules', fontSize: 20),
         Container(
             width: MediaQuery.of(context).size.width * 0.9,
             //height: 500,
@@ -211,22 +219,34 @@ class _SelectedQuarterModulesScreenState
             child: moduleDocs.isNotEmpty
                 ? SingleChildScrollView(
                     child: Column(
-                        children: moduleDocs.map((module) {
-                      final moduleData = module.data() as Map<dynamic, dynamic>;
-                      String title = moduleData[ModuleFields.title];
-                      return TextButton(
-                        onPressed: () => NavigatorRoutes.selectedModule(context,
-                            moduleID: module.id),
-                        child: Container(
-                          height: 50,
-                          decoration:
-                              BoxDecoration(border: Border.all(width: 2)),
-                          padding: EdgeInsets.all(4),
-                          child: Row(
-                              children: [blackInterBold(title, fontSize: 20)]),
-                        ),
-                      );
-                    }).toList()),
+                      children: [
+                        vertical10Pix(
+                            child: blackHelveticaBold('Uploaded Modules',
+                                fontSize: 20)),
+                        Column(
+                            children: moduleDocs.map((module) {
+                          final moduleData =
+                              module.data() as Map<dynamic, dynamic>;
+                          String title = moduleData[ModuleFields.title];
+                          return TextButton(
+                            onPressed: () => NavigatorRoutes.selectedModule(
+                                context,
+                                moduleID: module.id),
+                            child: Container(
+                              height: 80,
+                              decoration:
+                                  BoxDecoration(border: Border.all(width: 2)),
+                              padding: EdgeInsets.all(4),
+                              child: blackInterBold(title,
+                                  fontSize: 20,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          );
+                        }).toList()),
+                      ],
+                    ),
                   )
                 : Center(
                     child:

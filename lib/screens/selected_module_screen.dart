@@ -1,4 +1,5 @@
 import 'package:comprehenzone_mobile/providers/loading_provider.dart';
+import 'package:comprehenzone_mobile/widgets/custom_button_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_miscellaneous_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_text_widgets.dart';
 import 'package:comprehenzone_mobile/utils/firebase_util.dart';
@@ -24,6 +25,7 @@ class SelectedModuleScreen extends ConsumerStatefulWidget {
 class _SelectedModuleScreenState extends ConsumerState<SelectedModuleScreen> {
   String title = '';
   String content = '';
+  num quarter = 1;
   List<dynamic> additionalDocuments = [];
   List<dynamic> additionalResources = [];
 
@@ -39,6 +41,7 @@ class _SelectedModuleScreenState extends ConsumerState<SelectedModuleScreen> {
         final moduleData = module.data() as Map<dynamic, dynamic>;
         title = moduleData[ModuleFields.title];
         content = moduleData[ModuleFields.content];
+        quarter = moduleData[ModuleFields.quarter];
         additionalDocuments = moduleData[ModuleFields.additionalDocuments];
         additionalResources = moduleData[ModuleFields.additionalResources];
         ref.read(loadingProvider).toggleLoading(false);
@@ -62,12 +65,13 @@ class _SelectedModuleScreenState extends ConsumerState<SelectedModuleScreen> {
         Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(ImagePaths.modulesBG), fit: BoxFit.cover)),
-          padding: EdgeInsets.all(20),
-          child: SingleChildScrollView(
-            child: all10Pix(
+          padding: EdgeInsets.all(10),
+          child: Container(
+            decoration: BoxDecoration(
+                color: CustomColors.olympicBlue,
+                borderRadius: BorderRadius.circular(20)),
+            padding: EdgeInsets.all(10),
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   Gap(40),
@@ -86,16 +90,22 @@ class _SelectedModuleScreenState extends ConsumerState<SelectedModuleScreen> {
   }
 
   Widget _title() {
-    return SizedBox(
+    return Container(
         width: MediaQuery.of(context).size.width * 0.8,
-        child: blackInterBold(title, fontSize: 30));
+        decoration: BoxDecoration(
+            color: CustomColors.getQuarterColor(quarter.toString()),
+            border: Border.all(color: Colors.white, width: 4)),
+        padding: EdgeInsets.all(10),
+        child: blackHelveticaBold(title, fontSize: 20));
   }
 
   Widget _content() {
     return Container(
         width: MediaQuery.of(context).size.width * 0.8,
         height: MediaQuery.of(context).size.height * 0.8,
-        decoration: BoxDecoration(border: Border.all()),
+        decoration: BoxDecoration(
+            color: CustomColors.getQuarterColor(quarter.toString()),
+            border: Border.all(color: Colors.white, width: 4)),
         padding: EdgeInsets.all(10),
         child: blackInterRegular(content,
             fontSize: 18, textAlign: TextAlign.left));
@@ -108,29 +118,25 @@ class _SelectedModuleScreenState extends ConsumerState<SelectedModuleScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           interText('Supplementary Documents',
-              fontWeight: FontWeight.bold, fontSize: 14),
+              fontWeight: FontWeight.bold, fontSize: 18),
           Column(
             children: additionalDocuments.map((document) {
               Map<dynamic, dynamic> externalDocument =
                   document as Map<dynamic, dynamic>;
               return vertical10Pix(
-                child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: () async {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => ViewPDFScreen(
-                                  pdfURL: externalDocument[
-                                      AdditionalResourcesFields
-                                          .downloadLink])));
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: CustomColors.midnightBlue),
-                        child: whiteInterBold(
-                            externalDocument[
-                                AdditionalResourcesFields.fileName],
-                            fontSize: 15))),
-              );
+                  child: SizedBox(
+                      width: double.infinity,
+                      child: blueBorderElevatedButton(
+                          label: externalDocument[
+                              AdditionalResourcesFields.fileName],
+                          height: 60,
+                          onPress: () async {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => ViewPDFScreen(
+                                    pdfURL: externalDocument[
+                                        AdditionalResourcesFields
+                                            .downloadLink])));
+                          })));
             }).toList(),
           )
         ],
@@ -152,15 +158,11 @@ class _SelectedModuleScreenState extends ConsumerState<SelectedModuleScreen> {
               return vertical10Pix(
                 child: SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: () async => launchThisURL(externalResource[
-                            AdditionalResourcesFields.downloadLink]),
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: CustomColors.midnightBlue),
-                        child: whiteInterBold(
-                            externalResource[
-                                AdditionalResourcesFields.fileName],
-                            fontSize: 15))),
+                    child: blueBorderElevatedButton(
+                        label: externalResource[
+                            AdditionalResourcesFields.fileName],
+                        onPress: () async => launchThisURL(externalResource[
+                            AdditionalResourcesFields.downloadLink]))),
               );
             }).toList(),
           )

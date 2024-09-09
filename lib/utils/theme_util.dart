@@ -4,8 +4,9 @@ import 'color_util.dart';
 
 ThemeData themeData = ThemeData(
   colorSchemeSeed: CustomColors.midnightBlue,
-  scaffoldBackgroundColor: Colors.transparent,
+  scaffoldBackgroundColor: CustomColors.backgroundBlue,
   appBarTheme: const AppBarTheme(
+      iconTheme: IconThemeData(color: Colors.black),
       actionsIconTheme: IconThemeData(color: CustomColors.midnightBlue),
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -15,6 +16,6 @@ ThemeData themeData = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           backgroundColor: CustomColors.pearlWhite)),
 );

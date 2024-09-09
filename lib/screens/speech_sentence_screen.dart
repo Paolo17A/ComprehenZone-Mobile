@@ -342,90 +342,93 @@ class _SpeechSentenceScreenState extends ConsumerState<SpeechSentenceScreen>
       },
       child: Scaffold(
           appBar: AppBar(
-            backgroundColor: CustomColors.midnightBlue,
             iconTheme: IconThemeData(color: Colors.white),
-            title: whiteImpactBold(widget.speechModel.category),
+            title: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: CustomColors.dirtyPearl,
+                    borderRadius: BorderRadius.circular(30)),
+                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+                child: blackHelveticaRegular(widget.speechModel.category)),
           ),
           floatingActionButton: ref.read(loadingProvider).isLoading
               ? null
               : _bottomFloatingButtons(),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
-          body: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(ImagePaths.quizGB), fit: BoxFit.cover)),
-            child: switchedLoadingContainer(
-              ref.read(loadingProvider).isLoading,
-              Padding(
-                padding: const EdgeInsets.all(4),
-                child: Center(
-                  child: Column(
-                    children: [
-                      _directions(),
-                      _sentenceContainer(
-                          widget.speechModel.sentences[currentSentenceIndex]),
-                      CircleAvatar(
-                        backgroundColor: CustomColors.midnightBlue,
-                        radius: 30,
-                        child: IconButton(
-                          onPressed: () {
-                            flutterTts.speak(widget
-                                .speechModel.sentences[currentSentenceIndex]);
-                          },
-                          color: Colors.white,
-                          icon: const Icon(Icons.volume_up),
-                        ),
+          body: switchedLoadingContainer(
+            ref.read(loadingProvider).isLoading,
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              padding: EdgeInsets.all(10),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: CustomColors.olympicBlue),
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    _directions(),
+                    _sentenceContainer(
+                        widget.speechModel.sentences[currentSentenceIndex]),
+                    CircleAvatar(
+                      backgroundColor: CustomColors.dirtyPearl,
+                      radius: 30,
+                      child: IconButton(
+                        onPressed: () {
+                          flutterTts.speak(widget
+                              .speechModel.sentences[currentSentenceIndex]);
+                        },
+                        color: Colors.black,
+                        icon: const Icon(Icons.volume_up),
                       ),
-                      if (_detectedSpeech.isNotEmpty && _doneListening)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 30),
-                          child: Container(
-                            width: double.infinity,
-                            height: 200,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: CustomColors.grass, width: 7),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Center(
-                                child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    midnightBlueHelveticaBold(
-                                        'Accuracy: ${(accuracy).toStringAsFixed(2)}%',
+                    ),
+                    if (_detectedSpeech.isNotEmpty && _doneListening)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 30),
+                        child: Container(
+                          width: double.infinity,
+                          height: 200,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                  color: CustomColors.midnightBlue, width: 4)),
+                          child: Center(
+                              child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  midnightBlueHelveticaBold(
+                                      'Accuracy: ${(accuracy).toStringAsFixed(2)}%',
+                                      fontSize: 17),
+                                  all10Pix(
+                                    child: midnightBlueHelveticaBold(
+                                        'Confidence: ${(confidence * 100).toStringAsFixed(2)}%',
                                         fontSize: 17),
-                                    all10Pix(
-                                      child: midnightBlueHelveticaBold(
-                                          'Confidence: ${(confidence * 100).toStringAsFixed(2)}%',
-                                          fontSize: 17),
-                                    ),
-                                    if (globalSentenceBreakdown.isNotEmpty &&
-                                        _wordsDetected)
-                                      Wrap(
-                                          children: globalSentenceBreakdown
-                                              .map((word) {
-                                        return Text('${word.keys.first} ',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 24,
-                                                color: word.values.first
-                                                    ? Colors.green
-                                                    : Colors.red));
-                                      }).toList()),
-                                  ],
-                                ),
+                                  ),
+                                  if (globalSentenceBreakdown.isNotEmpty &&
+                                      _wordsDetected)
+                                    Wrap(
+                                        children:
+                                            globalSentenceBreakdown.map((word) {
+                                      return Text('${word.keys.first} ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 24,
+                                              color: word.values.first
+                                                  ? Colors.green
+                                                  : Colors.red));
+                                    }).toList()),
+                                ],
                               ),
-                            )),
-                          ),
-                        )
-                    ],
-                  ),
+                            ),
+                          )),
+                        ),
+                      )
+                  ],
                 ),
               ),
             ),
@@ -459,25 +462,21 @@ class _SpeechSentenceScreenState extends ConsumerState<SpeechSentenceScreen>
   }
 
   Widget _directions() {
-    return Padding(
+    return Container(
+      decoration: BoxDecoration(border: Border.all(width: 2)),
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-      child: Row(
-        children: [
-          const Icon(Icons.person, size: 50, color: Colors.white),
-          Flexible(
-            child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: whiteInterBold(
-                  _isListening
-                      ? 'I am listening...'
-                      : _doneListening
-                          ? _wordsDetected
-                              ? 'Done! Press the microphone button if you want to try again.'
-                              : 'We didn\'t hear anything. Please try again'
-                          : 'Press the microphone button to record your voice.',
-                )),
-          ),
-        ],
+      child: Flexible(
+        child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: blackHelveticaBold(
+              _isListening
+                  ? 'I am listening...'
+                  : _doneListening
+                      ? _wordsDetected
+                          ? 'Done! Press the microphone button if you want to try again.'
+                          : 'We didn\'t hear anything. Please try again'
+                      : 'Press the microphone button to record your voice.',
+            )),
       ),
     );
   }
@@ -488,7 +487,7 @@ class _SpeechSentenceScreenState extends ConsumerState<SpeechSentenceScreen>
       child: Container(
         height: 150,
         decoration: const BoxDecoration(
-            color: CustomColors.midnightBlue,
+            color: CustomColors.dirtyPearl,
             borderRadius: BorderRadius.all(Radius.circular(10))),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -497,8 +496,8 @@ class _SpeechSentenceScreenState extends ConsumerState<SpeechSentenceScreen>
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 all20Pix(
-                    child:
-                        Center(child: whiteImpactBold(sentence, fontSize: 20))),
+                    child: Center(
+                        child: blackHelveticaBold(sentence, fontSize: 20))),
               ],
             ),
           ),
