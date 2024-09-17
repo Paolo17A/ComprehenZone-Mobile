@@ -22,37 +22,39 @@ class HomeScreen extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             color: CustomColors.olympicBlue,
             padding: EdgeInsets.all(20),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(children: [
-                    Gap(50),
-                    homeButton(context,
-                        color: CustomColors.grimGrey,
-                        label: 'LEARNING MATERIALS',
-                        imagePath: ImagePaths.homeBook,
-                        onPress: () => Navigator.of(context)
-                            .pushNamed(NavigatorRoutes.quarterSelect),
-                        left: -30,
-                        top: -5),
-                    homeButton(context,
-                        color: CustomColors.pastelOrange,
-                        label: 'QUIZZES AND\nEXAM',
-                        imagePath: ImagePaths.homeStudying,
-                        onPress: () => Navigator.of(context)
-                            .pushNamed(NavigatorRoutes.quizSelect),
-                        right: -40,
-                        bottom: -30),
-                    homeButton(context,
-                        color: CustomColors.pastelPink,
-                        label: 'PRATICE ORAL FLUENCY',
-                        imagePath: ImagePaths.homeFeedback,
-                        onPress: () => Navigator.of(context)
-                            .pushNamed(NavigatorRoutes.speechSelect),
-                        left: -40,
-                        bottom: -10),
+            child: Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(children: [
+                      Gap(50),
+                      homeButton(context,
+                          color: CustomColors.grimGrey,
+                          label: 'LEARNING MATERIALS',
+                          imagePath: ImagePaths.homeBook,
+                          onPress: () => Navigator.of(context)
+                              .pushNamed(NavigatorRoutes.quarterSelect),
+                          left: -30,
+                          top: -5),
+                      homeButton(context,
+                          color: CustomColors.pastelOrange,
+                          label: 'QUIZZES AND\nEXAM',
+                          imagePath: ImagePaths.homeStudying,
+                          onPress: () => Navigator.of(context)
+                              .pushNamed(NavigatorRoutes.quizSelect),
+                          right: -40,
+                          bottom: -30),
+                      homeButton(context,
+                          color: CustomColors.pastelPink,
+                          label: 'PRATICE ORAL FLUENCY',
+                          imagePath: ImagePaths.homeFeedback,
+                          onPress: () => Navigator.of(context)
+                              .pushNamed(NavigatorRoutes.speechSelect),
+                          left: -40,
+                          bottom: -10),
+                    ]),
                   ]),
-                ])),
+            )),
       ),
     );
   }

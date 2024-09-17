@@ -33,7 +33,7 @@ class _AnswerButtonState extends State<AnswerButton> {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: SizedBox(
           width: MediaQuery.sizeOf(context).width * 0.65,
-          height: 50,
+          height: 80,
           child: ElevatedButton(
               onPressed: widget.onTap,
               style: ElevatedButton.styleFrom(

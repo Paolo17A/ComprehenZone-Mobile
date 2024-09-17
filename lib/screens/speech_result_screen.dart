@@ -106,7 +106,7 @@ class _SpeechResultScreenState extends ConsumerState<SpeechResultScreen> {
                                         fontSize: 20,
                                         textAlign: TextAlign.left),
                                     whiteHelveticaBold(
-                                        'Confidence Level: ${(sentenceResults[index][SpeechFields.confidence] as double).toStringAsFixed(2)}%'),
+                                        'Confidence Level: ${(sentenceResults[index][SpeechFields.confidence] as num).toStringAsFixed(2)}%'),
                                     Gap(16),
                                     Container(
                                       width: double.infinity,

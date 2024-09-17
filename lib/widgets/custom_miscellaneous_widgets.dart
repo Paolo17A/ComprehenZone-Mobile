@@ -212,6 +212,7 @@ Widget numberTextField(
           text: label,
           controller: textController,
           textInputType: TextInputType.number,
+          textColor: textColor,
           displayPrefixIcon: null),
     ],
   ));

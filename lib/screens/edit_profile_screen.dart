@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comprehenzone_mobile/utils/color_util.dart';
 import 'package:comprehenzone_mobile/widgets/custom_button_widgets.dart';
 import 'package:comprehenzone_mobile/widgets/custom_miscellaneous_widgets.dart';
@@ -5,6 +6,7 @@ import 'package:comprehenzone_mobile/widgets/custom_padding_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 
 import '../providers/loading_provider.dart';
 import '../providers/profile_image_url_provider.dart';
@@ -40,6 +42,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         ref
             .read(profileImageURLProvider)
             .setImageURL(userData[UserFields.profileImageURL]);
+        if (userData.containsKey(UserFields.birthDate)) {
+          birthDate = (userData[UserFields.birthDate] as Timestamp).toDate();
+        }
+        if (userData.containsKey(UserFields.contactNumber)) {
+          contactNumberController.text = userData[UserFields.contactNumber];
+        }
         ref.read(loadingProvider).toggleLoading(false);
       } catch (error) {
         scaffoldMessenger.showSnackBar(
@@ -79,12 +87,19 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       label: 'Last Name',
                       textController: lastNameController,
                       textColor: Colors.black),
+                  _birthdayWidget(),
+                  numberTextField(
+                      label: 'Contact Number',
+                      textController: contactNumberController,
+                      textColor: Colors.black),
                   vertical20Pix(
                       child: saveChangesButton(
                           onPress: () => updateProfile(context, ref,
                               firstNameController: firstNameController,
-                              lastNameController: lastNameController))),
-                  Gap(100),
+                              lastNameController: lastNameController,
+                              mobileNumberController: contactNumberController,
+                              birthDate: birthDate))),
+                  Gap(20),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [Image.asset(ImagePaths.profileID, scale: 4)])
@@ -99,6 +114,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   Widget _profilePictureWidget() {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -121,13 +137,47 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 height: 32,
                 onPress: () => uploadProfilePicture(context, ref)),
             Gap(4),
-            blueBorderElevatedButton(
-                label: 'REMOVE PICTURE',
-                height: 32,
-                onPress: () => removeProfilePicture(context, ref))
+            if (ref.read(profileImageURLProvider).profileImageURL.isNotEmpty)
+              blueBorderElevatedButton(
+                  label: 'REMOVE PICTURE',
+                  height: 32,
+                  onPress: () => removeProfilePicture(context, ref))
           ],
         )
       ],
+    );
+  }
+
+  Widget _birthdayWidget() {
+    return all10Pix(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          blackHelveticaBold('Birthdate', fontSize: 18),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+                onPressed: () async {
+                  final selectedDate = await showDatePicker(
+                      context: context,
+                      firstDate: DateTime(1959),
+                      lastDate: DateTime.now());
+                  if (selectedDate != null) {
+                    setState(() {
+                      birthDate = selectedDate;
+                    });
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.black, width: 2)),
+                    backgroundColor: CustomColors.olympicBlue),
+                child: blackHelveticaBold(birthDate != null
+                    ? DateFormat('MMM dd, yyyy').format(birthDate!)
+                    : 'Select Date')),
+          ),
+        ],
+      ),
     );
   }
 }

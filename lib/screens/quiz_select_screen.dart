@@ -73,7 +73,7 @@ class _QuizSelectScreenState extends ConsumerState<QuizSelectScreen> {
                           color: CustomColors.grass),
                       padding: EdgeInsets.all(10),
                       child: blackHelveticaBold('QUIZZES AND EXAMS',
-                          fontSize: 28)),
+                          fontSize: 24)),
                   vertical20Pix(
                       child: Column(
                           children: quizDocs
@@ -135,9 +135,9 @@ class _QuizSelectScreenState extends ConsumerState<QuizSelectScreen> {
             padding: EdgeInsets.all(10),
             child: Center(
                 child: blackInterBold(title,
-                    fontSize: 20,
+                    fontSize: 18,
                     textAlign: TextAlign.left,
-                    maxLines: 2,
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis))),
       ),
     );

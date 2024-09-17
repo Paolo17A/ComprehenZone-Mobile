@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comprehenzone_mobile/providers/profile_image_url_provider.dart';
 import 'package:comprehenzone_mobile/utils/color_util.dart';
 import 'package:comprehenzone_mobile/widgets/custom_padding_widgets.dart';
@@ -6,6 +7,7 @@ import 'package:comprehenzone_mobile/utils/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 
 import '../providers/loading_provider.dart';
 import '../widgets/custom_miscellaneous_widgets.dart';
@@ -22,6 +24,8 @@ class ProfileScreen extends ConsumerStatefulWidget {
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   String formattedName = '';
   String sectionName = '';
+  DateTime? birthDate;
+  String contactNumber = '';
 
   @override
   void initState() {
@@ -35,7 +39,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         final userData = userDoc.data() as Map<dynamic, dynamic>;
         formattedName =
             '${userData[UserFields.firstName]} ${userData[UserFields.lastName]}';
-
+        if (userData.containsKey(UserFields.birthDate)) {
+          birthDate = (userData[UserFields.birthDate] as Timestamp).toDate();
+        }
+        if (userData.containsKey(UserFields.contactNumber)) {
+          contactNumber = userData[UserFields.contactNumber];
+        }
         ref
             .read(profileImageURLProvider)
             .setImageURL(userData[UserFields.profileImageURL]);
@@ -43,6 +52,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             (userData[UserFields.assignedSections] as List<dynamic>).first);
         final sectionData = section.data() as Map<dynamic, dynamic>;
         sectionName = sectionData[SectionFields.name];
+
         ref.read(loadingProvider.notifier).toggleLoading(false);
       } catch (error) {
         scaffoldMessenger.showSnackBar(
@@ -144,7 +154,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             blackInterBold('DATE OF BIRTH', fontSize: 16),
-            blackInterRegular('INSERT BIRTHDAY HERE', fontSize: 16),
+            blackInterRegular(
+                birthDate != null
+                    ? DateFormat('MMM dd, yyyy').format(birthDate!)
+                    : 'N/A',
+                fontSize: 16),
           ],
         )
       ],
@@ -160,7 +174,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             blackInterBold('CONTACT NUMBER', fontSize: 16),
-            blackInterRegular('12345', fontSize: 16),
+            blackInterRegular(contactNumber.isNotEmpty ? contactNumber : 'N/A',
+                fontSize: 16),
           ],
         )
       ],

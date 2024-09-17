@@ -291,8 +291,13 @@ Future removeProfilePicture(BuildContext context, WidgetRef ref) async {
 
 Future updateProfile(BuildContext context, WidgetRef ref,
     {required TextEditingController firstNameController,
-    required TextEditingController lastNameController}) async {
-  if (firstNameController.text.isEmpty || lastNameController.text.isEmpty) {
+    required TextEditingController lastNameController,
+    required TextEditingController mobileNumberController,
+    required DateTime? birthDate}) async {
+  if (firstNameController.text.isEmpty ||
+      lastNameController.text.isEmpty ||
+      mobileNumberController.text.isEmpty ||
+      birthDate == null) {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please fill up all given fields.')));
     return;
@@ -305,6 +310,8 @@ Future updateProfile(BuildContext context, WidgetRef ref,
         .update({
       UserFields.firstName: firstNameController.text.trim(),
       UserFields.lastName: lastNameController.text.trim(),
+      UserFields.contactNumber: mobileNumberController.text.trim(),
+      UserFields.birthDate: birthDate
     });
     ref.read(loadingProvider).toggleLoading(false);
     Navigator.of(context).pop();
