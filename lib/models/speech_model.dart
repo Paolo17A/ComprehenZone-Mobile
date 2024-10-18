@@ -56,7 +56,7 @@ List<SpeechModel> speechCategories = [
         "A proper copper coffee pot.",
         "Schedule your Schedule Carefully",
         "Rural juror",
-        "THe water is boiling.",
+        "The water is boiling.",
         "She saw Susie in the shoeshine shop.",
         "The sixth sick sheik's sixth sheep's sick.",
         "The wind is blowing."

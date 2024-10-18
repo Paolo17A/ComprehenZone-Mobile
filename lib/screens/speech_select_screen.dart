@@ -73,6 +73,7 @@ class _SpeechSelectScreenState extends ConsumerState<SpeechSelectScreen> {
   Widget _speechButtons() {
     return ListView.builder(
         shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.zero,
         itemCount: speechCategories.length,
         itemBuilder: (context, index) {

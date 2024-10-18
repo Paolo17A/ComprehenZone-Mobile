@@ -136,7 +136,7 @@ class _SpeechSentenceScreenState extends ConsumerState<SpeechSentenceScreen>
         _doneListening = false;
         _isListening = true;
       });
-      await setSentenceToSpeak();
+      //await setSentenceToSpeak();
       print('BEFORE: ${sentenceData}');
 
       _speech.listen(
@@ -194,6 +194,7 @@ class _SpeechSentenceScreenState extends ConsumerState<SpeechSentenceScreen>
                         allWordsInRecitedSentence[i]) {
                       sentenceBreakdown.add({allWordsInGivenSentence[i]: true});
                     } else {
+                      print('${allWordsInRecitedSentence[i]} did not match');
                       sentenceBreakdown
                           .add({allWordsInGivenSentence[i]: false});
                     }
@@ -465,19 +466,17 @@ class _SpeechSentenceScreenState extends ConsumerState<SpeechSentenceScreen>
     return Container(
       decoration: BoxDecoration(border: Border.all(width: 2)),
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-      child: Flexible(
-        child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: blackHelveticaBold(
-              _isListening
-                  ? 'I am listening...'
-                  : _doneListening
-                      ? _wordsDetected
-                          ? 'Done! Press the microphone button if you want to try again.'
-                          : 'We didn\'t hear anything. Please try again'
-                      : 'Press the microphone button to record your voice.',
-            )),
-      ),
+      child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: blackHelveticaBold(
+            _isListening
+                ? 'I am listening...'
+                : _doneListening
+                    ? _wordsDetected
+                        ? 'Done! Press the microphone button if you want to try again.'
+                        : 'We didn\'t hear anything. Please try again'
+                    : 'Press the microphone button to record your voice.',
+          )),
     );
   }
 
